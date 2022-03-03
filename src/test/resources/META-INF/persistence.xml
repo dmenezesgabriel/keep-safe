@@ -12,13 +12,6 @@
       <!-- Framework used for JPA especification -->
       <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
       <class>com.smartguardian.domain.entity.User</class>
-      <class>com.smartguardian.domain.entity.Product</class>
-      <class>com.smartguardian.domain.entity.ProductState</class>
-      <class>com.smartguardian.domain.entity.Provider</class>
-      <class>com.smartguardian.domain.entity.Establishment</class>
-      <class>com.smartguardian.domain.entity.EstablishmentSegment</class>
-
-
 
         <properties>
             <!-- Database Driver -->

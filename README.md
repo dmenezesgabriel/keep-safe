@@ -20,3 +20,5 @@ mvn clean package
 ```sh
 mvn test
 ```
+
+_Test using H2 in memory database._
