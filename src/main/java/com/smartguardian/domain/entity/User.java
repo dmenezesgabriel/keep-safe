@@ -7,6 +7,7 @@ package com.smartguardian.domain.entity;
  * @version 1.0
  */
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,16 +16,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_usuario")
@@ -49,13 +51,11 @@ public class User implements Serializable {
     @Column(name = "des_senha", nullable = false, length = 50)
     private String password;
 
-    // TODO
-    // Add relationship
-    private Address address;
+    @OneToMany(mappedBy = "user")
+    private List<Address> addressList;
 
-    // TODO
-    // Add relationship
-    private Phone phone;
+    @OneToMany(mappedBy = "user")
+    private List<Phone> phoneList;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -72,16 +72,33 @@ public class User implements Serializable {
     public User() {}
 
     public User(int id, String name, String email, String password,
-            Address address, Phone phone, Calendar createdAt,
-            Calendar updatedAt) {
+            List<Address> addressList, List<Phone> phoneList,
+            Calendar createdAt, Calendar updatedAt) {
+        super();
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        this.address = address;
-        this.phone = phone;
+        this.addressList = addressList;
+        this.phoneList = phoneList;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public List<Address> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<Address> addressList) {
+        this.addressList = addressList;
+    }
+
+    public List<Phone> getPhoneList() {
+        return phoneList;
+    }
+
+    public void setPhoneList(List<Phone> phoneList) {
+        this.phoneList = phoneList;
     }
 
     public int getId() {
@@ -114,22 +131,6 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Address getAddress() {
-        return this.address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public Phone getPhone() {
-        return this.phone;
-    }
-
-    public void setPhone(Phone phone) {
-        this.phone = phone;
     }
 
     public Calendar getCreatedAt() {
@@ -169,12 +170,22 @@ public class User implements Serializable {
     }
 
     public User address(Address address) {
-        setAddress(address);
+        this.addressList.add(address);
+        return this;
+    }
+
+    public User addressList(List<Address> address) {
+        setAddressList(address);
         return this;
     }
 
     public User phone(Phone phone) {
-        setPhone(phone);
+        this.phoneList.add(phone);
+        return this;
+    }
+
+    public User phoneList(List<Phone> phone) {
+        setPhoneList(phone);
         return this;
     }
 
@@ -199,15 +210,15 @@ public class User implements Serializable {
         return id == user.id && Objects.equals(name, user.name)
                 && Objects.equals(email, user.email)
                 && Objects.equals(password, user.password)
-                && Objects.equals(address, user.address)
-                && Objects.equals(phone, user.phone)
+                && Objects.equals(addressList, user.addressList)
+                && Objects.equals(phoneList, user.phoneList)
                 && Objects.equals(createdAt, user.createdAt)
                 && Objects.equals(updatedAt, user.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, password, address, phone,
+        return Objects.hash(id, name, email, password, addressList, phoneList,
                 createdAt, updatedAt);
     }
 
@@ -217,8 +228,8 @@ public class User implements Serializable {
 
         return "{" + " id='" + getId() + "'" + ", name='" + getName() + "'"
                 + ", email='" + getEmail() + "'" + ", password='"
-                + getPassword() + "'" + ", address='" + getAddress() + "'"
-                + ", phone='" + getPhone() + "'" + ", createdAt='"
+                + getPassword() + "'" + ", address='" + getAddressList() + "'"
+                + ", phone='" + getPhoneList() + "'" + ", createdAt='"
                 + sdf.format(createdAt.getTime()) + "'" + ", updatedAt='"
                 + sdf.format(updatedAt.getTime()) + "'" + "}";
     }

@@ -59,8 +59,8 @@ public class Address implements Serializable {
     @Column(name = "nr_cep_endereco", nullable = false, length = 8)
     private String postalCode;
 
-    @JoinColumn(name = "cd_usuario")
     @ManyToOne
+    @JoinColumn(name = "cd_usuario")
     private User user;
 
     @CreationTimestamp
@@ -237,7 +237,8 @@ public class Address implements Serializable {
         return this;
     }
 
-    @Override
+    @SuppressWarnings("unlikely-arg-type")
+	@Override
     public boolean equals(Object o) {
         if (o == this)
             return true;

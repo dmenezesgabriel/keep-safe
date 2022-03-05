@@ -7,20 +7,25 @@ package com.smartguardian.domain.entity;
  * @version 1.0
  */
 
+
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+
 import java.util.Objects;
+
 
 @Entity
 @Table(name = "tbl_pessoa_juridica")
+@DiscriminatorValue("PJ")
 public class LegalPerson extends User {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @SequenceGenerator(name = "tbl_pessoa_juridica_cd_pessoa_juridica_seq",
@@ -58,10 +63,6 @@ public class LegalPerson extends User {
         this.document = document;
     }
 
-    public LegalPerson id(int id) {
-        setId(id);
-        return this;
-    }
 
     public LegalPerson document(String document) {
         setDocument(document);

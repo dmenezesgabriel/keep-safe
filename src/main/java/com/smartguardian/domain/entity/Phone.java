@@ -39,13 +39,11 @@ public class Phone implements Serializable {
     @Column(name = "cd_telefone", updatable = false)
     private int id;
 
-    // 15 dígitos BR
-    // 055 011 98765 4321
     @Column(name = "nr_telefone", nullable = false, length = 15)
     private String phoneNumber;
 
-    @JoinColumn(name = "cd_usuario")
     @ManyToOne
+    @JoinColumn(name = "cd_usuario")
     private User user;
 
     @CreationTimestamp

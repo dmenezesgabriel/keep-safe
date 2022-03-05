@@ -9,24 +9,25 @@ package com.smartguardian.domain.entity;
 import java.util.Calendar;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.text.SimpleDateFormat;
-
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
+import java.text.SimpleDateFormat;
 import java.util.Objects;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.GenerationType;
 
 @Entity
 @Table(name = "tbl_pessoa_fisisca")
+@DiscriminatorValue("PF")
 public class NaturalPerson extends User {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @SequenceGenerator(name = "tbl_pessoa_fisica_cd_pessoa_fisica_seq",
@@ -45,7 +46,7 @@ public class NaturalPerson extends User {
     private Calendar birthDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "des_genero", length = 50)
+    @Column(name = "ds_genero", length = 50)
     private Gender gender;
 
 

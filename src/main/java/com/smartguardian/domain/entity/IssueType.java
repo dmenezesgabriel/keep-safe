@@ -7,21 +7,24 @@ package com.smartguardian.domain.entity;
  * @version 1.0
  */
 import java.util.Calendar;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_tipo_ocorrencia")
@@ -39,6 +42,9 @@ public class IssueType implements Serializable {
 
     @Column(name = "nm_tipo_ocorrencia", nullable = false, length = 50)
     private String name;
+
+    @OneToMany(mappedBy = "issueType")
+    private List<Issue> issueList;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -78,6 +84,14 @@ public class IssueType implements Serializable {
         this.name = name;
     }
 
+    public List<Issue> getIssueList() {
+        return issueList;
+    }
+
+    public void setIssueList(List<Issue> issueList) {
+        this.issueList = issueList;
+    }
+
     public Calendar getCreatedAt() {
         return this.createdAt;
     }
@@ -104,13 +118,13 @@ public class IssueType implements Serializable {
         return this;
     }
 
-    public IssueType createdAt(Calendar createdAt) {
-        setCreatedAt(createdAt);
+    public IssueType issue(Issue issue) {
+        this.issueList.add(issue);
         return this;
     }
 
-    public IssueType updatedAt(Calendar updatedAt) {
-        setUpdatedAt(updatedAt);
+    public IssueType issueList(List<Issue> issueList) {
+        setIssueList(issueList);
         return this;
     }
 
@@ -127,9 +141,9 @@ public class IssueType implements Serializable {
                 && Objects.equals(updatedAt, issueType.updatedAt);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, createdAt, updatedAt);
+    public IssueType updatedAt(Calendar updatedAt) {
+        setUpdatedAt(updatedAt);
+        return this;
     }
 
     @Override
