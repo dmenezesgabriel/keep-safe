@@ -8,13 +8,15 @@ package com.smartguardian.domain.entity;
 * @version 1.0
 */
 import java.util.Calendar;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -27,38 +29,31 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "t_usuario")
+@Table(name = "tbl_usuario")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class User implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "t_usuario_cd_usuario_seq", sequenceName = "t_usuario_cd_usuario_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_usuario_cd_usuario_seq")
+    @SequenceGenerator(name = "tbl_usuario_cd_usuario_seq", sequenceName = "tbl_usuario_cd_usuario_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_usuario_cd_usuario_seq")
     @Column(name = "cd_usuario", updatable = false)
-    // The naming tablename_columname_seq is the PostgreSQL default sequence naming
-    // for SERIAL
-    // The allocationSize=1 is important if you need Hibernate to co-operate with
-    // other clients
-    // Note that this sequence will have "gaps" in it if transactions roll back.
-    // Never assume that for any id n there is an id n-1 or n+1.
     private int id;
 
-    @Column(name = "nm_usuario", nullable = false, length = 60)
+    @Column(name = "nm_usuario", nullable = false, length = 50)
     private String name;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "dt_nascimento")
-    private Calendar birthDate;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "des_genero")
-    private Gender gender;
-
-    @Column(name = "des_email", nullable = false, length = 60)
+    @Column(name = "des_email", nullable = false, length = 150)
     private String email;
 
-    @Column(name = "des_senha", nullable = false, length = 60)
+    @Column(name = "des_senha", nullable = false, length = 50)
     private String password;
+
+    @OneToMany
+    private Address address;
+
+    @OneToMany
+    private Phone phone;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -73,14 +68,14 @@ public class User implements Serializable {
     public User() {
     }
 
-    public User(int id, String name, Calendar birthDate, Gender gender, String email, String password,
-            Calendar createdAt, Calendar updatedAt) {
+    public User(int id, String name, String email, String password, Address address, Phone phone, Calendar createdAt,
+            Calendar updatedAt) {
         this.id = id;
         this.name = name;
-        this.birthDate = birthDate;
-        this.gender = gender;
         this.email = email;
         this.password = password;
+        this.address = address;
+        this.phone = phone;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -101,22 +96,6 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public Calendar getBirthDate() {
-        return this.birthDate;
-    }
-
-    public void setBirthDate(Calendar birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public Gender getGender() {
-        return this.gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
     public String getEmail() {
         return this.email;
     }
@@ -131,6 +110,22 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Address getAddress() {
+        return this.address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Phone getPhone() {
+        return this.phone;
+    }
+
+    public void setPhone(Phone phone) {
+        this.phone = phone;
     }
 
     public Calendar getCreatedAt() {
@@ -159,16 +154,6 @@ public class User implements Serializable {
         return this;
     }
 
-    public User birthDate(Calendar birthDate) {
-        setBirthDate(birthDate);
-        return this;
-    }
-
-    public User gender(Gender gender) {
-        setGender(gender);
-        return this;
-    }
-
     public User email(String email) {
         setEmail(email);
         return this;
@@ -176,6 +161,16 @@ public class User implements Serializable {
 
     public User password(String password) {
         setPassword(password);
+        return this;
+    }
+
+    public User address(Address address) {
+        setAddress(address);
+        return this;
+    }
+
+    public User phone(Phone phone) {
+        setPhone(phone);
         return this;
     }
 
@@ -197,27 +192,28 @@ public class User implements Serializable {
             return false;
         }
         User user = (User) o;
-        return id == user.id && Objects.equals(name, user.name) && Objects.equals(birthDate, user.birthDate)
-                && Objects.equals(gender, user.gender) && Objects.equals(email, user.email)
-                && Objects.equals(password, user.password) && Objects.equals(createdAt, user.createdAt)
+        return id == user.id && Objects.equals(name, user.name) && Objects.equals(email, user.email)
+                && Objects.equals(password, user.password) && Objects.equals(address, user.address)
+                && Objects.equals(phone, user.phone) && Objects.equals(createdAt, user.createdAt)
                 && Objects.equals(updatedAt, user.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, birthDate, gender, email, password, createdAt, updatedAt);
+        return Objects.hash(id, name, email, password, address, phone, createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
         return "{" +
                 " id='" + getId() + "'" +
                 ", name='" + getName() + "'" +
-                ", birthDate='" + sdf.format(birthDate.getTime()) + "'" +
-                ", gender='" + getGender() + "'" +
                 ", email='" + getEmail() + "'" +
                 ", password='" + getPassword() + "'" +
+                ", address='" + getAddress() + "'" +
+                ", phone='" + getPhone() + "'" +
                 ", createdAt='" + sdf.format(createdAt.getTime()) + "'" +
                 ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" +
                 "}";

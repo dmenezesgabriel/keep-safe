@@ -1,13 +1,20 @@
 package com.smartguardian.domain.entity;
 
+/**
+* Issue entity
+*
+* @author Smart Guardian Group
+* @version 1.0
+*/
 import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -20,30 +27,36 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "t_ocorrencia")
+@Table(name = "tbl_ocorrencia")
 public class Issue implements Serializable {
+    protected static final long serialVersionUID = 1L;
+
     @Id
-    @SequenceGenerator(name = "t_ocorrencia_cd_ocorrencia_seq", sequenceName = "t_ocorrencia_cd_ocorrencia_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_ocorrencia_cd_ocorrencia_seq")
+    @SequenceGenerator(name = "tbl_ocorrencia_cd_ocorrencia_seq", sequenceName = "tbl_ocorrencia_cd_ocorrencia_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_ocorrencia_cd_ocorrencia_seq")
     @Column(name = "cd_ocorrencia", updatable = false)
-    // The naming tablename_columname_seq is the PostgreSQL default sequence naming
-    // for SERIAL
-    // The allocationSize=1 is important if you need Hibernate to co-operate with
-    // other clients
-    // Note that this sequence will have "gaps" in it if transactions roll back.
-    // Never assume that for any id n there is an id n-1 or n+1.
     private int id;
 
-    @Column(name = "nm_ocorrencia", nullable = false, length = 60)
-    private String name;
+    @Column(name = "ds_ocorrencia", nullable = false, length = 300)
+    private String description;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "des_tipo_ocorrencia")
+    @Column(name = "vl_latitude_ocorrencia", nullable = false, length = 50)
+    private String latitude;
+
+    @Column(name = "vl_longitude_ocorrencia", nullable = false, length = 50)
+    private String longitude;
+
+    @ManyToOne
+    @Column(name = "cd_tipo_ocorrencia")
     private IssueType issueType;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "des_status_ocorrencia")
-    private Status status;
+    @ManyToOne
+    @Column(name = "cd_status_ocorrencia")
+    private IssueStatus issueStatus;
+
+    @JoinColumn(name = "cd_usuario")
+    @ManyToOne
+    private User user;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -58,11 +71,15 @@ public class Issue implements Serializable {
     public Issue() {
     }
 
-    public Issue(int id, String name, IssueType issueType, Status status, Calendar createdAt, Calendar updatedAt) {
+    public Issue(int id, String description, String latitude, String longitude, IssueType issueType,
+            IssueStatus issueStatus, User user, Calendar createdAt, Calendar updatedAt) {
         this.id = id;
-        this.name = name;
+        this.description = description;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.issueType = issueType;
-        this.status = status;
+        this.issueStatus = issueStatus;
+        this.user = user;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -75,12 +92,28 @@ public class Issue implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return this.name;
+    public String getDescription() {
+        return this.description;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLatitude() {
+        return this.latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return this.longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public IssueType getIssueType() {
@@ -91,12 +124,20 @@ public class Issue implements Serializable {
         this.issueType = issueType;
     }
 
-    public Status getStatus() {
-        return this.status;
+    public IssueStatus getIssueStatus() {
+        return this.issueStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setIssueStatus(IssueStatus issueStatus) {
+        this.issueStatus = issueStatus;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Calendar getCreatedAt() {
@@ -120,8 +161,18 @@ public class Issue implements Serializable {
         return this;
     }
 
-    public Issue name(String name) {
-        setName(name);
+    public Issue description(String description) {
+        setDescription(description);
+        return this;
+    }
+
+    public Issue latitude(String latitude) {
+        setLatitude(latitude);
+        return this;
+    }
+
+    public Issue longitude(String longitude) {
+        setLongitude(longitude);
         return this;
     }
 
@@ -130,8 +181,13 @@ public class Issue implements Serializable {
         return this;
     }
 
-    public Issue status(Status status) {
-        setStatus(status);
+    public Issue issueStatus(IssueStatus issueStatus) {
+        setIssueStatus(issueStatus);
+        return this;
+    }
+
+    public Issue user(User user) {
+        setUser(user);
         return this;
     }
 
@@ -153,24 +209,30 @@ public class Issue implements Serializable {
             return false;
         }
         Issue issue = (Issue) o;
-        return id == issue.id && Objects.equals(name, issue.name) && Objects.equals(issueType, issue.issueType)
-                && Objects.equals(status, issue.status) && Objects.equals(createdAt, issue.createdAt)
+        return id == issue.id && Objects.equals(description, issue.description)
+                && Objects.equals(latitude, issue.latitude) && Objects.equals(longitude, issue.longitude)
+                && Objects.equals(issueType, issue.issueType) && Objects.equals(issueStatus, issue.issueStatus)
+                && Objects.equals(user, issue.user) && Objects.equals(createdAt, issue.createdAt)
                 && Objects.equals(updatedAt, issue.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, issueType, status, createdAt, updatedAt);
+        return Objects.hash(id, description, latitude, longitude, issueType, issueStatus, user, createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
         return "{" +
                 " id='" + getId() + "'" +
-                ", name='" + getName() + "'" +
+                ", description='" + getDescription() + "'" +
+                ", latitude='" + getLatitude() + "'" +
+                ", longitude='" + getLongitude() + "'" +
                 ", issueType='" + getIssueType() + "'" +
-                ", status='" + getStatus() + "'" +
+                ", issueStatus='" + getIssueStatus() + "'" +
+                ", user='" + getUser() + "'" +
                 ", createdAt='" + sdf.format(createdAt.getTime()) + "'" +
                 ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" +
                 "}";

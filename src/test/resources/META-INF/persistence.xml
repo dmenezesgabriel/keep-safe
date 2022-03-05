@@ -12,12 +12,18 @@
       <!-- Framework used for JPA especification -->
       <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
       <class>com.smartguardian.domain.entity.User</class>
-
+      <class>com.smartguardian.domain.entity.LegalPerson</class>
+      <class>com.smartguardian.domain.entity.NaturalPerson</class>
+      <class>com.smartguardian.domain.entity.Address</class>
+      <class>com.smartguardian.domain.entity.Phone</class>
+      <class>com.smartguardian.domain.entity.Issue</class>
+      <class>com.smartguardian.domain.entity.IssueType</class>
+      <class>com.smartguardian.domain.entity.IssueStatus</class>
         <properties>
             <!-- Database Driver -->
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
             <!-- Database connection uri -->
-            <!-- "jdbc:sgdb_name://host_address:port_number/database_name" -->
+            <!-- "jdbc:sgdb_name://hostbl_address:portbl_number/database_name" -->
             <!-- - When using docker, host addres is the container name -->
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test" />
             <!-- Database User -->
@@ -35,7 +41,7 @@
             <!-- Should be disabled in production -->
             <property name="hibernate.show_sql" value="true" />
             <!-- Show SQL formatted -->
-            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.formatbl_sql" value="true" />
         </properties>
 
     </persistence-unit>
