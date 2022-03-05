@@ -1,44 +1,56 @@
-// hibernate/src/test/java/com/dmenezesgabriel/jpa/TestInserUser.java
 package com.smartguardian.domain.entity;
 
-import java.util.Calendar;
 import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import static org.junit.Assert.assertTrue;
+import java.util.List;
 
 public class TestInsertUser {
-    @Test
-    public void shouldInserUser() throws Exception {
-        EntityManagerFactory entityManagerFactory = Persistence
-                .createEntityManagerFactory("com.smartguardian");
-        EntityManager entityManager = entityManagerFactory
-                .createEntityManager();
+        @Test
+        public void shouldInserUser() throws Exception {
+                EntityManagerFactory entityManagerFactory =
+                                Persistence.createEntityManagerFactory(
+                                                "com.smartguardian");
+                EntityManager entityManager =
+                                entityManagerFactory.createEntityManager();
 
-        User user = new User();
+                CriteriaBuilder criteriaBuilder =
+                                entityManager.getCriteriaBuilder();
+                CriteriaQuery<User> criteriaQuery =
+                                criteriaBuilder.createQuery(User.class);
+                criteriaQuery.from(User.class);
+                List<User> users = entityManager.createQuery(criteriaQuery)
+                                .getResultList();
 
-        user.setName("test_user");
-        user.setEmail("test_email@example.com");
-        Calendar birthDate = Calendar.getInstance();
-        birthDate.set(Calendar.YEAR, 1995);
-        birthDate.set(Calendar.MONTH, Calendar.MARCH);
-        birthDate.set(Calendar.DAY_OF_MONTH, 20);
+                // No users registered yet
+                assertTrue(users.isEmpty());
 
-        user.setPassword("123");
+                User user = new User();
 
-        entityManager.getTransaction().begin();
-        entityManager.persist(user);
-        entityManager.getTransaction().commit();
+                user.setName("Teste");
+                user.setEmail("teste@example.com");
+                user.setPassword("123");
 
-        User record = entityManager.find(User.class, user.getId());
+                entityManager.getTransaction().begin();
+                entityManager.persist(user);
+                entityManager.getTransaction().commit();
 
-        assertTrue(record.getName().equals("test_user"));
-        assertTrue(record.getEmail().equals("test_email@example.com"));
+                users = entityManager.createQuery(criteriaQuery)
+                                .getResultList();
+                assertTrue(users.size() == 1);
 
-        entityManager.close();
-        entityManagerFactory.close();
+                User record = entityManager.find(User.class, user.getId());
 
-    }
+                assertTrue(record.getName().equals("Teste"));
+                assertTrue(record.getEmail().equals("teste@example.com"));
+
+                entityManager.close();
+                entityManagerFactory.close();
+
+        }
 }

@@ -1,4 +1,3 @@
-// hibernate/src/test/java/com/dmenezesgabriel/jpa/User.java
 package com.smartguardian.domain.entity;
 
 import static org.junit.Assert.assertTrue;
@@ -10,11 +9,13 @@ public class TestUser {
     public void shoudInstanceObject() throws Exception {
         User user = new User();
 
-        user.setName("test_user");
-        user.setEmail("test_email@example.com");
+        user.setName("Teste");
+        user.setEmail("teste@example.com");
         user.setPassword("123");
-        assertTrue(user.getName().equals("test_user"));
-        assertTrue(user.getEmail().equals("test_email@example.com"));
+
+        assertTrue(user.getName().equals("Teste"));
+        assertTrue(user.getEmail().equals("teste@example.com"));
+        assertTrue(user.getPassword().equals("123"));
 
     }
 }

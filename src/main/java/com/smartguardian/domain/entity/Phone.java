@@ -1,11 +1,11 @@
 package com.smartguardian.domain.entity;
 
 /**
-* Phone entity
-*
-* @author Smart Guardian Group
-* @version 1.0
-*/
+ * Phone entity
+ *
+ * @author Smart Guardian Group
+ * @version 1.0
+ */
 import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,8 +32,10 @@ public class Phone implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "tbl_telefone_cd_telefone_seq", sequenceName = "tbl_telefone_cd_telefone_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_telefone_cd_telefone_seq")
+    @SequenceGenerator(name = "tbl_telefone_cd_telefone_seq",
+            sequenceName = "tbl_telefone_cd_telefone_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "tbl_telefone_cd_telefone_seq")
     @Column(name = "cd_telefone", updatable = false)
     private int id;
 
@@ -48,18 +50,20 @@ public class Phone implements Serializable {
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE", updatable = false)
+    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE",
+            updatable = false)
     private Calendar createdAt;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_atualizacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "dt_atualizacao",
+            columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
-    public Phone() {
-    }
+    public Phone() {}
 
-    public Phone(int id, String phoneNumber, User user, Calendar createdAt, Calendar updatedAt) {
+    public Phone(int id, String phoneNumber, User user, Calendar createdAt,
+            Calendar updatedAt) {
         this.id = id;
         this.phoneNumber = phoneNumber;
         this.user = user;
@@ -140,8 +144,10 @@ public class Phone implements Serializable {
             return false;
         }
         Phone phone = (Phone) o;
-        return id == phone.id && Objects.equals(phoneNumber, phone.phoneNumber) && Objects.equals(user, phone.user)
-                && Objects.equals(createdAt, phone.createdAt) && Objects.equals(updatedAt, phone.updatedAt);
+        return id == phone.id && Objects.equals(phoneNumber, phone.phoneNumber)
+                && Objects.equals(user, phone.user)
+                && Objects.equals(createdAt, phone.createdAt)
+                && Objects.equals(updatedAt, phone.updatedAt);
     }
 
     @Override
@@ -153,13 +159,10 @@ public class Phone implements Serializable {
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        return "{" +
-                " id='" + getId() + "'" +
-                ", phoneNumber='" + getPhoneNumber() + "'" +
-                ", user='" + getUser() + "'" +
-                ", createdAt='" + sdf.format(createdAt.getTime()) + "'" +
-                ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" +
-                "}";
+        return "{" + " id='" + getId() + "'" + ", phoneNumber='"
+                + getPhoneNumber() + "'" + ", user='" + getUser() + "'"
+                + ", createdAt='" + sdf.format(createdAt.getTime()) + "'"
+                + ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" + "}";
     }
 
 }
