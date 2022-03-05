@@ -1,11 +1,11 @@
 package com.smartguardian.domain.entity;
 
 /**
-* Issue entity
-*
-* @author Smart Guardian Group
-* @version 1.0
-*/
+ * Issue entity
+ *
+ * @author Smart Guardian Group
+ * @version 1.0
+ */
 import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,8 +32,11 @@ public class Issue implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "tbl_ocorrencia_cd_ocorrencia_seq", sequenceName = "tbl_ocorrencia_cd_ocorrencia_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_ocorrencia_cd_ocorrencia_seq")
+    @SequenceGenerator(name = "tbl_ocorrencia_cd_ocorrencia_seq",
+            sequenceName = "tbl_ocorrencia_cd_ocorrencia_seq",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "tbl_ocorrencia_cd_ocorrencia_seq")
     @Column(name = "cd_ocorrencia", updatable = false)
     private int id;
 
@@ -60,19 +63,21 @@ public class Issue implements Serializable {
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE", updatable = false)
+    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE",
+            updatable = false)
     private Calendar createdAt;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_atualizacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "dt_atualizacao",
+            columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
-    public Issue() {
-    }
+    public Issue() {}
 
-    public Issue(int id, String description, String latitude, String longitude, IssueType issueType,
-            IssueStatus issueStatus, User user, Calendar createdAt, Calendar updatedAt) {
+    public Issue(int id, String description, String latitude, String longitude,
+            IssueType issueType, IssueStatus issueStatus, User user,
+            Calendar createdAt, Calendar updatedAt) {
         this.id = id;
         this.description = description;
         this.latitude = latitude;
@@ -210,32 +215,32 @@ public class Issue implements Serializable {
         }
         Issue issue = (Issue) o;
         return id == issue.id && Objects.equals(description, issue.description)
-                && Objects.equals(latitude, issue.latitude) && Objects.equals(longitude, issue.longitude)
-                && Objects.equals(issueType, issue.issueType) && Objects.equals(issueStatus, issue.issueStatus)
-                && Objects.equals(user, issue.user) && Objects.equals(createdAt, issue.createdAt)
+                && Objects.equals(latitude, issue.latitude)
+                && Objects.equals(longitude, issue.longitude)
+                && Objects.equals(issueType, issue.issueType)
+                && Objects.equals(issueStatus, issue.issueStatus)
+                && Objects.equals(user, issue.user)
+                && Objects.equals(createdAt, issue.createdAt)
                 && Objects.equals(updatedAt, issue.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, latitude, longitude, issueType, issueStatus, user, createdAt, updatedAt);
+        return Objects.hash(id, description, latitude, longitude, issueType,
+                issueStatus, user, createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        return "{" +
-                " id='" + getId() + "'" +
-                ", description='" + getDescription() + "'" +
-                ", latitude='" + getLatitude() + "'" +
-                ", longitude='" + getLongitude() + "'" +
-                ", issueType='" + getIssueType() + "'" +
-                ", issueStatus='" + getIssueStatus() + "'" +
-                ", user='" + getUser() + "'" +
-                ", createdAt='" + sdf.format(createdAt.getTime()) + "'" +
-                ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" +
-                "}";
+        return "{" + " id='" + getId() + "'" + ", description='"
+                + getDescription() + "'" + ", latitude='" + getLatitude() + "'"
+                + ", longitude='" + getLongitude() + "'" + ", issueType='"
+                + getIssueType() + "'" + ", issueStatus='" + getIssueStatus()
+                + "'" + ", user='" + getUser() + "'" + ", createdAt='"
+                + sdf.format(createdAt.getTime()) + "'" + ", updatedAt='"
+                + sdf.format(updatedAt.getTime()) + "'" + "}";
     }
 
 }

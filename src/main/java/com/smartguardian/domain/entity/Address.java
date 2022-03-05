@@ -1,11 +1,11 @@
 package com.smartguardian.domain.entity;
 
 /**
-* Address entity
-*
-* @author Smart Guardian Group
-* @version 1.0
-*/
+ * Address entity
+ *
+ * @author Smart Guardian Group
+ * @version 1.0
+ */
 import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,8 +31,10 @@ public class Address implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "tbl_endereco_cd_endereco_seq", sequenceName = "tbl_endereco_cd_endereco_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_endereco_cd_endereco_seq")
+    @SequenceGenerator(name = "tbl_endereco_cd_endereco_seq",
+            sequenceName = "tbl_endereco_cd_endereco_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "tbl_endereco_cd_endereco_seq")
     @Column(name = "cd_endereco", updatable = false)
     private int id;
 
@@ -63,19 +65,22 @@ public class Address implements Serializable {
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE", updatable = false)
+    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE",
+            updatable = false)
     private Calendar createdAt;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_atualizacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "dt_atualizacao",
+            columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
-    public Address() {
-    }
+    public Address() {}
 
-    public Address(int id, String address, String addressNumber, String district, String city, String state,
-            String complement, String postalCode, User user, Calendar createdAt, Calendar updatedAt) {
+    public Address(int id, String address, String addressNumber,
+            String district, String city, String state, String complement,
+            String postalCode, User user, Calendar createdAt,
+            Calendar updatedAt) {
         this.id = id;
         this.address = address;
         this.addressNumber = addressNumber;
@@ -241,36 +246,35 @@ public class Address implements Serializable {
         }
         Address address = (Address) o;
         return id == address.id && Objects.equals(address, address.address)
-                && Objects.equals(addressNumber, address.addressNumber) && Objects.equals(district, address.district)
-                && Objects.equals(city, address.city) && Objects.equals(state, address.state)
-                && Objects.equals(complement, address.complement) && Objects.equals(postalCode, address.postalCode)
-                && Objects.equals(user, address.user) && Objects.equals(createdAt, address.createdAt)
+                && Objects.equals(addressNumber, address.addressNumber)
+                && Objects.equals(district, address.district)
+                && Objects.equals(city, address.city)
+                && Objects.equals(state, address.state)
+                && Objects.equals(complement, address.complement)
+                && Objects.equals(postalCode, address.postalCode)
+                && Objects.equals(user, address.user)
+                && Objects.equals(createdAt, address.createdAt)
                 && Objects.equals(updatedAt, address.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, address, addressNumber, district, city, state, complement, postalCode, user, createdAt,
-                updatedAt);
+        return Objects.hash(id, address, addressNumber, district, city, state,
+                complement, postalCode, user, createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        return "{" +
-                " id='" + getId() + "'" +
-                ", address='" + getAddress() + "'" +
-                ", addressNumber='" + getAddressNumber() + "'" +
-                ", district='" + getDistrict() + "'" +
-                ", city='" + getCity() + "'" +
-                ", state='" + getState() + "'" +
-                ", complement='" + getComplement() + "'" +
-                ", postalCode='" + getPostalCode() + "'" +
-                ", user='" + getUser() + "'" +
-                ", createdAt='" + sdf.format(createdAt.getTime()) + "'" +
-                ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" +
-                "}";
+        return "{" + " id='" + getId() + "'" + ", address='" + getAddress()
+                + "'" + ", addressNumber='" + getAddressNumber() + "'"
+                + ", district='" + getDistrict() + "'" + ", city='" + getCity()
+                + "'" + ", state='" + getState() + "'" + ", complement='"
+                + getComplement() + "'" + ", postalCode='" + getPostalCode()
+                + "'" + ", user='" + getUser() + "'" + ", createdAt='"
+                + sdf.format(createdAt.getTime()) + "'" + ", updatedAt='"
+                + sdf.format(updatedAt.getTime()) + "'" + "}";
     }
 
 }

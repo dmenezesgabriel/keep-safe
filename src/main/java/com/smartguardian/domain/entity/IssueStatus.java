@@ -1,11 +1,11 @@
 package com.smartguardian.domain.entity;
 
 /**
-* Issue Status entity
-*
-* @author Smart Guardian Group
-* @version 1.0
-*/
+ * Issue Status entity
+ *
+ * @author Smart Guardian Group
+ * @version 1.0
+ */
 import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,8 +29,11 @@ public class IssueStatus implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "tbl_status_ocorrencia_cd_status_ocorrencia_seq", sequenceName = "tbl_status_ocorrencia_cd_status_ocorrencia_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_status_ocorrencia_cd_status_ocorrencia_seq")
+    @SequenceGenerator(name = "tbl_status_ocorrencia_cd_status_ocorrencia_seq",
+            sequenceName = "tbl_status_ocorrencia_cd_status_ocorrencia_seq",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "tbl_status_ocorrencia_cd_status_ocorrencia_seq")
     @Column(name = "cd_status_ocorrencia", updatable = false)
     private int id;
 
@@ -39,18 +42,20 @@ public class IssueStatus implements Serializable {
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE", updatable = false)
+    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE",
+            updatable = false)
     private Calendar createdAt;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_atualizacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "dt_atualizacao",
+            columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
-    public IssueStatus() {
-    }
+    public IssueStatus() {}
 
-    public IssueStatus(int id, String name, Calendar createdAt, Calendar updatedAt) {
+    public IssueStatus(int id, String name, Calendar createdAt,
+            Calendar updatedAt) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;
@@ -118,7 +123,8 @@ public class IssueStatus implements Serializable {
         }
         IssueStatus issueStatus = (IssueStatus) o;
         return id == issueStatus.id && Objects.equals(name, issueStatus.name)
-                && Objects.equals(createdAt, issueStatus.createdAt) && Objects.equals(updatedAt, issueStatus.updatedAt);
+                && Objects.equals(createdAt, issueStatus.createdAt)
+                && Objects.equals(updatedAt, issueStatus.updatedAt);
     }
 
     @Override
@@ -130,12 +136,9 @@ public class IssueStatus implements Serializable {
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        return "{" +
-                " id='" + getId() + "'" +
-                ", name='" + getName() + "'" +
-                ", createdAt='" + sdf.format(createdAt.getTime()) + "'" +
-                ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" +
-                "}";
+        return "{" + " id='" + getId() + "'" + ", name='" + getName() + "'"
+                + ", createdAt='" + sdf.format(createdAt.getTime()) + "'"
+                + ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" + "}";
     }
 
 }
