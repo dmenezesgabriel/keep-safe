@@ -14,11 +14,15 @@
       <class>com.smartguardian.domain.entity.User</class>
       <class>com.smartguardian.domain.entity.LegalPerson</class>
       <class>com.smartguardian.domain.entity.NaturalPerson</class>
-      <class>com.smartguardian.domain.entity.Address</class>
-      <class>com.smartguardian.domain.entity.Phone</class>
       <class>com.smartguardian.domain.entity.Issue</class>
       <class>com.smartguardian.domain.entity.IssueType</class>
       <class>com.smartguardian.domain.entity.IssueStatus</class>
+      <class>com.smartguardian.domain.entity.Phone</class>
+      <class>com.smartguardian.domain.entity.Address</class>
+
+
+
+
         <properties>
             <!-- Database Driver -->
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />

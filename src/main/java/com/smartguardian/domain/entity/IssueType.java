@@ -1,27 +1,30 @@
 package com.smartguardian.domain.entity;
 
 /**
-* Issue Type entity
-*
-* @author Smart Guardian Group
-* @version 1.0
-*/
+ * Issue Type entity
+ *
+ * @author Smart Guardian Group
+ * @version 1.0
+ */
 import java.util.Calendar;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_tipo_ocorrencia")
@@ -29,28 +32,36 @@ public class IssueType implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq", sequenceName = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq")
+    @SequenceGenerator(name = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq",
+            sequenceName = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq")
     @Column(name = "cd_tipo_ocorrencia", updatable = false)
     private int id;
 
     @Column(name = "nm_tipo_ocorrencia", nullable = false, length = 50)
     private String name;
 
+    @OneToMany(mappedBy = "issueType")
+    private List<Issue> issueList;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE", updatable = false)
+    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE",
+            updatable = false)
     private Calendar createdAt;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_atualizacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "dt_atualizacao",
+            columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
-    public IssueType() {
-    }
+    public IssueType() {}
 
-    public IssueType(int id, String name, Calendar createdAt, Calendar updatedAt) {
+    public IssueType(int id, String name, Calendar createdAt,
+            Calendar updatedAt) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;
@@ -71,6 +82,14 @@ public class IssueType implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Issue> getIssueList() {
+        return issueList;
+    }
+
+    public void setIssueList(List<Issue> issueList) {
+        this.issueList = issueList;
     }
 
     public Calendar getCreatedAt() {
@@ -99,13 +118,13 @@ public class IssueType implements Serializable {
         return this;
     }
 
-    public IssueType createdAt(Calendar createdAt) {
-        setCreatedAt(createdAt);
+    public IssueType issue(Issue issue) {
+        this.issueList.add(issue);
         return this;
     }
 
-    public IssueType updatedAt(Calendar updatedAt) {
-        setUpdatedAt(updatedAt);
+    public IssueType issueList(List<Issue> issueList) {
+        setIssueList(issueList);
         return this;
     }
 
@@ -118,24 +137,22 @@ public class IssueType implements Serializable {
         }
         IssueType issueType = (IssueType) o;
         return id == issueType.id && Objects.equals(name, issueType.name)
-                && Objects.equals(createdAt, issueType.createdAt) && Objects.equals(updatedAt, issueType.updatedAt);
+                && Objects.equals(createdAt, issueType.createdAt)
+                && Objects.equals(updatedAt, issueType.updatedAt);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, createdAt, updatedAt);
+    public IssueType updatedAt(Calendar updatedAt) {
+        setUpdatedAt(updatedAt);
+        return this;
     }
 
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        return "{" +
-                " id='" + getId() + "'" +
-                ", name='" + getName() + "'" +
-                ", createdAt='" + sdf.format(createdAt.getTime()) + "'" +
-                ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" +
-                "}";
+        return "{" + " id='" + getId() + "'" + ", name='" + getName() + "'"
+                + ", createdAt='" + sdf.format(createdAt.getTime()) + "'"
+                + ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" + "}";
     }
 
 }

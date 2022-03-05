@@ -3,8 +3,7 @@ package com.smartguardian.domain.entity;
 
 public enum Gender {
 
-    MALE("masculino"),
-    FEMALE("feminino");
+    MALE("masculino"), FEMALE("feminino");
 
     private String description;
 
