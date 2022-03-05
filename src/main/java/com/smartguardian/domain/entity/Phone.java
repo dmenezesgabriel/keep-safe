@@ -1,7 +1,7 @@
 package com.smartguardian.domain.entity;
 
 /**
-* Issue Type entity
+* Phone entity
 *
 * @author Smart Guardian Group
 * @version 1.0
@@ -9,9 +9,12 @@ package com.smartguardian.domain.entity;
 import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,18 +27,24 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "tbl_tipo_ocorrencia")
-public class IssueType implements Serializable {
+@Table(name = "tbl_telefone")
+public class Phone implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq", sequenceName = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq")
-    @Column(name = "cd_tipo_ocorrencia", updatable = false)
+    @SequenceGenerator(name = "tbl_telefone_cd_telefone_seq", sequenceName = "tbl_telefone_cd_telefone_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_telefone_cd_telefone_seq")
+    @Column(name = "cd_telefone", updatable = false)
     private int id;
 
-    @Column(name = "nm_tipo_ocorrencia", nullable = false, length = 50)
-    private String name;
+    // 15 dígitos BR
+    // 055 011 98765 4321
+    @Column(name = "nr_telefone", nullable = false, length = 15)
+    private String phoneNumber;
+
+    @JoinColumn(name = "cd_usuario")
+    @ManyToOne
+    private User user;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -47,12 +56,13 @@ public class IssueType implements Serializable {
     @Column(name = "dt_atualizacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
-    public IssueType() {
+    public Phone() {
     }
 
-    public IssueType(int id, String name, Calendar createdAt, Calendar updatedAt) {
+    public Phone(int id, String phoneNumber, User user, Calendar createdAt, Calendar updatedAt) {
         this.id = id;
-        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.user = user;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -65,12 +75,20 @@ public class IssueType implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return this.name;
+    public String getPhoneNumber() {
+        return this.phoneNumber;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Calendar getCreatedAt() {
@@ -89,22 +107,27 @@ public class IssueType implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public IssueType id(int id) {
+    public Phone id(int id) {
         setId(id);
         return this;
     }
 
-    public IssueType name(String name) {
-        setName(name);
+    public Phone phoneNumber(String phoneNumber) {
+        setPhoneNumber(phoneNumber);
         return this;
     }
 
-    public IssueType createdAt(Calendar createdAt) {
+    public Phone user(User user) {
+        setUser(user);
+        return this;
+    }
+
+    public Phone createdAt(Calendar createdAt) {
         setCreatedAt(createdAt);
         return this;
     }
 
-    public IssueType updatedAt(Calendar updatedAt) {
+    public Phone updatedAt(Calendar updatedAt) {
         setUpdatedAt(updatedAt);
         return this;
     }
@@ -113,17 +136,17 @@ public class IssueType implements Serializable {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof IssueType)) {
+        if (!(o instanceof Phone)) {
             return false;
         }
-        IssueType issueType = (IssueType) o;
-        return id == issueType.id && Objects.equals(name, issueType.name)
-                && Objects.equals(createdAt, issueType.createdAt) && Objects.equals(updatedAt, issueType.updatedAt);
+        Phone phone = (Phone) o;
+        return id == phone.id && Objects.equals(phoneNumber, phone.phoneNumber) && Objects.equals(user, phone.user)
+                && Objects.equals(createdAt, phone.createdAt) && Objects.equals(updatedAt, phone.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, createdAt, updatedAt);
+        return Objects.hash(id, phoneNumber, user, createdAt, updatedAt);
     }
 
     @Override
@@ -132,7 +155,8 @@ public class IssueType implements Serializable {
 
         return "{" +
                 " id='" + getId() + "'" +
-                ", name='" + getName() + "'" +
+                ", phoneNumber='" + getPhoneNumber() + "'" +
+                ", user='" + getUser() + "'" +
                 ", createdAt='" + sdf.format(createdAt.getTime()) + "'" +
                 ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" +
                 "}";

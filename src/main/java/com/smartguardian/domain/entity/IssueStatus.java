@@ -1,5 +1,11 @@
 package com.smartguardian.domain.entity;
 
+/**
+* Issue Status entity
+*
+* @author Smart Guardian Group
+* @version 1.0
+*/
 import java.util.Calendar;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,28 +24,18 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.util.Objects;
 
 @Entity
-@Table(name = "t_evento")
-public class Event implements Serializable {
+@Table(name = "tbl_status_ocorrencia")
+public class IssueStatus implements Serializable {
+    protected static final long serialVersionUID = 1L;
+
     @Id
-    @SequenceGenerator(name = "t_evento_cd_evento_seq", sequenceName = "t_evento_cd_evento_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_evento_cd_evento_seq")
-    @Column(name = "cd_evento", updatable = false)
-    // The naming tablename_columname_seq is the PostgreSQL default sequence naming
-    // for SERIAL
-    // The allocationSize=1 is important if you need Hibernate to co-operate with
-    // other clients
-    // Note that this sequence will have "gaps" in it if transactions roll back.
-    // Never assume that for any id n there is an id n-1 or n+1.
+    @SequenceGenerator(name = "tbl_status_ocorrencia_cd_status_ocorrencia_seq", sequenceName = "tbl_status_ocorrencia_cd_status_ocorrencia_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_status_ocorrencia_cd_status_ocorrencia_seq")
+    @Column(name = "cd_status_ocorrencia", updatable = false)
     private int id;
 
-    @Column(name = "nm_evento", nullable = false, length = 60)
+    @Column(name = "nm_status_ocorrencia", nullable = false, length = 50)
     private String name;
-
-    @Column(name = "des_model", nullable = false, length = 60)
-    private String model;
-
-    @Column(name = "cd_model", nullable = false, length = 60)
-    private String model_id;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -51,14 +47,12 @@ public class Event implements Serializable {
     @Column(name = "dt_atualizacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
-    public Event() {
+    public IssueStatus() {
     }
 
-    public Event(int id, String name, String model, String model_id, Calendar createdAt, Calendar updatedAt) {
+    public IssueStatus(int id, String name, Calendar createdAt, Calendar updatedAt) {
         this.id = id;
         this.name = name;
-        this.model = model;
-        this.model_id = model_id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -79,22 +73,6 @@ public class Event implements Serializable {
         this.name = name;
     }
 
-    public String getModel() {
-        return this.model;
-    }
-
-    public void setModel(String model) {
-        this.model = model;
-    }
-
-    public String getModel_id() {
-        return this.model_id;
-    }
-
-    public void setModel_id(String model_id) {
-        this.model_id = model_id;
-    }
-
     public Calendar getCreatedAt() {
         return this.createdAt;
     }
@@ -111,32 +89,22 @@ public class Event implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public Event id(int id) {
+    public IssueStatus id(int id) {
         setId(id);
         return this;
     }
 
-    public Event name(String name) {
+    public IssueStatus name(String name) {
         setName(name);
         return this;
     }
 
-    public Event model(String model) {
-        setModel(model);
-        return this;
-    }
-
-    public Event model_id(String model_id) {
-        setModel_id(model_id);
-        return this;
-    }
-
-    public Event createdAt(Calendar createdAt) {
+    public IssueStatus createdAt(Calendar createdAt) {
         setCreatedAt(createdAt);
         return this;
     }
 
-    public Event updatedAt(Calendar updatedAt) {
+    public IssueStatus updatedAt(Calendar updatedAt) {
         setUpdatedAt(updatedAt);
         return this;
     }
@@ -145,28 +113,26 @@ public class Event implements Serializable {
     public boolean equals(Object o) {
         if (o == this)
             return true;
-        if (!(o instanceof Event)) {
+        if (!(o instanceof IssueStatus)) {
             return false;
         }
-        Event event = (Event) o;
-        return id == event.id && Objects.equals(name, event.name) && Objects.equals(model, event.model)
-                && Objects.equals(model_id, event.model_id) && Objects.equals(createdAt, event.createdAt)
-                && Objects.equals(updatedAt, event.updatedAt);
+        IssueStatus issueStatus = (IssueStatus) o;
+        return id == issueStatus.id && Objects.equals(name, issueStatus.name)
+                && Objects.equals(createdAt, issueStatus.createdAt) && Objects.equals(updatedAt, issueStatus.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, model, model_id, createdAt, updatedAt);
+        return Objects.hash(id, name, createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
         return "{" +
                 " id='" + getId() + "'" +
                 ", name='" + getName() + "'" +
-                ", model='" + getModel() + "'" +
-                ", model_id='" + getModel_id() + "'" +
                 ", createdAt='" + sdf.format(createdAt.getTime()) + "'" +
                 ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" +
                 "}";

@@ -19,15 +19,13 @@ public class TestInsertUser {
 
         User user = new User();
 
-        user.setName("Gabriel");
-        user.setEmail("gabriel@example.com");
+        user.setName("test_user");
+        user.setEmail("test_email@example.com");
         Calendar birthDate = Calendar.getInstance();
         birthDate.set(Calendar.YEAR, 1995);
         birthDate.set(Calendar.MONTH, Calendar.MARCH);
         birthDate.set(Calendar.DAY_OF_MONTH, 20);
-        user.setBirthDate(birthDate);
-        Gender gender = Gender.MALE;
-        user.setGender(gender);
+
         user.setPassword("123");
 
         entityManager.getTransaction().begin();
@@ -36,10 +34,8 @@ public class TestInsertUser {
 
         User record = entityManager.find(User.class, user.getId());
 
-        assertTrue(record.getName().equals("Gabriel"));
-        assertTrue(record.getEmail().equals("gabriel@example.com"));
-        assertTrue(record.getBirthDate().equals(birthDate));
-        assertTrue(record.getGender().equals(Gender.MALE));
+        assertTrue(record.getName().equals("test_user"));
+        assertTrue(record.getEmail().equals("test_email@example.com"));
 
         entityManager.close();
         entityManagerFactory.close();
