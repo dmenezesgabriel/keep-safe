@@ -12,11 +12,13 @@ import com.smartguardian.domain.entity.Phone;
 import com.smartguardian.domain.entity.User;
 
 public class CreateTest {
-	
+
 	public static void main(String[] args) {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("com.smartguardian");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		
+		EntityManagerFactory entityManagerFactory =
+				Persistence.createEntityManagerFactory("com.smartguardian");
+		EntityManager entityManager =
+				entityManagerFactory.createEntityManager();
+
 		Address address = new Address();
 		address.id(0);
 		address.address("Rua Acre");
@@ -26,17 +28,17 @@ public class CreateTest {
 		address.state("SP");
 		address.complement("Casa 12-B");
 		address.postalCode("14811131");
-		
+
 		List<Address> addressList = new ArrayList<>();
 		addressList.add(address);
-		
+
 		Phone phone = new Phone();
 		phone.id(0);
 		phone.phoneNumber("055016997037819");
-		
+
 		List<Phone> phoneList = new ArrayList<>();
 		phoneList.add(phone);
-		
+
 		User user = new User();
 		user.id(0);
 		user.name("Arthur Silva");
@@ -44,20 +46,20 @@ public class CreateTest {
 		user.password("123");
 		user.addressList(addressList);
 		user.phoneList(phoneList);
-		
+
 		address.setUser(user);
 		phone.setUser(user);
-		
+
 		try {
-			entityManager.persist(user);
 			entityManager.getTransaction().begin();
+			entityManager.persist(user);
 			entityManager.getTransaction().commit();
 		} catch (Exception e) {
 			if (entityManager.getTransaction().isActive()) {
 				entityManager.getTransaction().rollback();
 			}
 		}
-		
+
 		entityManager.close();
 		entityManagerFactory.close();
 	}

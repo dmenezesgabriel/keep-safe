@@ -37,8 +37,7 @@ public class NaturalPerson extends User {
 
     public NaturalPerson() {}
 
-    public NaturalPerson(String document, Calendar birthDate,
-            Gender gender) {
+    public NaturalPerson(String document, Calendar birthDate, Gender gender) {
         this.document = document;
         this.birthDate = birthDate;
         this.gender = gender;
@@ -106,9 +105,9 @@ public class NaturalPerson extends User {
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        return "{" + " document='" + getDocument()
-                + "'" + ", birthDate='" + sdf.format(birthDate.getTime()) + "'"
-                + ", gender='" + getGender() + "'" + "}";
+        return "{" + " document='" + getDocument() + "'" + ", birthDate='"
+                + sdf.format(birthDate.getTime()) + "'" + ", gender='"
+                + getGender() + "'" + "}";
     }
 
 

@@ -5,49 +5,6 @@
              http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
              version="2.1">
 
-    <!-- transaction-type -->
-    <!-- - RESOURCE_LOCAL -->
-    <!-- - JTA -->
-    <!-- <persistence-unit name="com.smartguardian" transaction-type="RESOURCE_LOCAL">
-      Framework used for JPA especification
-      <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-      <class>com.smartguardian.domain.entity.User</class>
-      <class>com.smartguardian.domain.entity.LegalPerson</class>
-      <class>com.smartguardian.domain.entity.NaturalPerson</class>
-      <class>com.smartguardian.domain.entity.Issue</class>
-      <class>com.smartguardian.domain.entity.IssueType</class>
-      <class>com.smartguardian.domain.entity.IssueStatus</class>
-      <class>com.smartguardian.domain.entity.Phone</class>
-      <class>com.smartguardian.domain.entity.Address</class>
-
-
-        <properties>
-            Database Driver
-            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-            Database connection uri
-            "jdbc:sgdb_name://hostbl_address:portbl_number/database_name"
-            - When using docker, host addres is the container name
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://postgres:5432/postgres" />
-            Database User
-            <property name="javax.persistence.jdbc.user" value="postgres" />
-            Database Password
-            <property name="javax.persistence.jdbc.password" value="postgres" />
-      		Database Dialect
-	    	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            create / create-drop / update
-            - create: creates database from scratch using definitions
-            - update: try to update new attributes
-            - validate: verify if the entities are compatible with db tables
-            <property name="hibernate.hbm2ddl.auto" value="update" />
-            Show SQL in console
-            Should be disabled in production
-            <property name="hibernate.show_sql" value="true" />
-            Show SQL formatted
-            <property name="hibernate.formatbl_sql" value="true" />
-        </properties>
-
-    </persistence-unit> -->
-    
     <persistence-unit name="com.smartguardian">
     	<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 	      <class>com.smartguardian.domain.entity.User</class>
@@ -58,7 +15,7 @@
 	      <class>com.smartguardian.domain.entity.IssueStatus</class>
 	      <class>com.smartguardian.domain.entity.Phone</class>
 	      <class>com.smartguardian.domain.entity.Address</class>
-	      
+
 		<properties>
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.hbm2ddl.auto" value="update" />

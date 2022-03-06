@@ -240,7 +240,7 @@ public class Address implements Serializable {
     }
 
     @SuppressWarnings("unlikely-arg-type")
-	@Override
+    @Override
     public boolean equals(Object o) {
         if (o == this)
             return true;

@@ -58,7 +58,7 @@
     	<artifactId>jdbc-driver</artifactId>
     	<version>12</version>
     	<scope>system</scope>
-    	<systemPath>/home/arthur/Downloads/ojdbc8.jar</systemPath>
+    	<systemPath>${basedir}\external\lib\ojdbc8.jar</systemPath>
     </dependency>
 		<!-- end::oracle[] -->
 		<!-- tag::H2[] -->

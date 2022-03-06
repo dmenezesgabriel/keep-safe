@@ -5,7 +5,8 @@ import javax.persistence.Persistence;
 public class DataBaseTest {
 
 	public static void main(String[] args) {
-		Persistence.createEntityManagerFactory("com.smartguardian-oracle").createEntityManager();
+		Persistence.createEntityManagerFactory("com.smartguardian-oracle")
+				.createEntityManager();
 	}
 
 }
