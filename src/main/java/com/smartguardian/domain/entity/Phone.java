@@ -7,6 +7,8 @@ package com.smartguardian.domain.entity;
  * @version 1.0
  */
 import java.util.Calendar;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -42,7 +44,7 @@ public class Phone implements Serializable {
     @Column(name = "nr_telefone", nullable = false, length = 15)
     private String phoneNumber;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cd_usuario")
     private User user;
 

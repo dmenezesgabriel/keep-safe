@@ -9,53 +9,33 @@ package com.smartguardian.domain.entity;
 
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
-import java.util.Objects;
+import java.util.List;
 
 
 @Entity
 @Table(name = "tbl_pessoa_juridica")
-@DiscriminatorValue("PJ")
 public class LegalPerson extends User {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @SequenceGenerator(name = "tbl_pessoa_juridica_cd_pessoa_juridica_seq",
-            sequenceName = "tbl_pessoa_juridica_cd_pessoa_juridica_seq",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "tbl_pessoa_juridica_cd_pessoa_juridica_seq")
-    @Column(name = "cd_pessoa_juridica", updatable = false)
-    private int id;
-
     @Column(name = "nr_cnpj_pessoa_juridica", nullable = false, length = 14)
     private String document;
-
+    
+    @OneToMany(mappedBy = "legalPerson")
+    private List<IssueType> issueTypeList;
 
     public LegalPerson() {}
 
-    public LegalPerson(int id, String document) {
-        this.id = id;
-        this.document = document;
-    }
+    public LegalPerson(String document, List<IssueType> issueTypeList) {
+		super();
+		this.document = document;
+		this.issueTypeList = issueTypeList;
+	}
 
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getDocument() {
+	public String getDocument() {
         return this.document;
     }
 
@@ -64,32 +44,63 @@ public class LegalPerson extends User {
     }
 
 
-    public LegalPerson document(String document) {
+    public List<IssueType> getIssueTypeList() {
+		return issueTypeList;
+	}
+
+	public void setIssueTypeList(List<IssueType> issueTypeList) {
+		this.issueTypeList = issueTypeList;
+	}
+
+	public LegalPerson document(String document) {
         setDocument(document);
         return this;
     }
+	
+	public LegalPerson issueType(IssueType issueType) {
+		this.issueTypeList.add(issueType);
+		return this;
+	}
+	
+	public LegalPerson issueTypeList(List<IssueType> issueTypeList) {
+		setIssueTypeList(issueTypeList);
+		return this;
+	}
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof LegalPerson)) {
-            return false;
-        }
-        LegalPerson legalPerson = (LegalPerson) o;
-        return id == legalPerson.id
-                && Objects.equals(document, legalPerson.document);
-    }
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((document == null) ? 0 : document.hashCode());
+		result = prime * result + ((issueTypeList == null) ? 0 : issueTypeList.hashCode());
+		return result;
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, document);
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LegalPerson other = (LegalPerson) obj;
+		if (document == null) {
+			if (other.document != null)
+				return false;
+		} else if (!document.equals(other.document))
+			return false;
+		if (issueTypeList == null) {
+			if (other.issueTypeList != null)
+				return false;
+		} else if (!issueTypeList.equals(other.issueTypeList))
+			return false;
+		return true;
+	}
 
-    @Override
-    public String toString() {
-        return "{" + " id='" + getId() + "'" + ", document='" + getDocument()
-                + "'" + "}";
-    }
+	@Override
+	public String toString() {
+		return "LegalPerson [document=" + document + ", issueTypeList=" + issueTypeList + "]";
+	}
 
 }

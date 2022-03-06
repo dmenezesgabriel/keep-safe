@@ -7,6 +7,8 @@ package com.smartguardian.domain.entity;
  * @version 1.0
  */
 import java.util.Calendar;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -59,7 +61,7 @@ public class Address implements Serializable {
     @Column(name = "nr_cep_endereco", nullable = false, length = 8)
     private String postalCode;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cd_usuario")
     private User user;
 
