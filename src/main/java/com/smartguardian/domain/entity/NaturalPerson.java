@@ -9,7 +9,6 @@ package com.smartguardian.domain.entity;
 import java.util.Calendar;
 
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,25 +17,11 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.GenerationType;
 
 @Entity
 @Table(name = "tbl_pessoa_fisisca")
-@DiscriminatorValue("PF")
 public class NaturalPerson extends User {
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @SequenceGenerator(name = "tbl_pessoa_fisica_cd_pessoa_fisica_seq",
-            sequenceName = "tbl_pessoa_fisica_cd_pessoa_fisica_seq",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "tbl_pessoa_fisica_cd_pessoa_fisica_seq")
-    @Column(name = "cd_pessoa_fisica", updatable = false)
-    private int id;
 
     @Column(name = "nr_cpf_pessoa_fisica", nullable = false, length = 11)
     private String document;
@@ -52,20 +37,10 @@ public class NaturalPerson extends User {
 
     public NaturalPerson() {}
 
-    public NaturalPerson(int id, String document, Calendar birthDate,
-            Gender gender) {
-        this.id = id;
+    public NaturalPerson(String document, Calendar birthDate, Gender gender) {
         this.document = document;
         this.birthDate = birthDate;
         this.gender = gender;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getDocument() {
@@ -92,11 +67,6 @@ public class NaturalPerson extends User {
         this.gender = gender;
     }
 
-    public NaturalPerson id(int id) {
-        setId(id);
-        return this;
-    }
-
     public NaturalPerson document(String document) {
         setDocument(document);
         return this;
@@ -120,15 +90,14 @@ public class NaturalPerson extends User {
             return false;
         }
         NaturalPerson naturalPerson = (NaturalPerson) o;
-        return id == naturalPerson.id
-                && Objects.equals(document, naturalPerson.document)
+        return Objects.equals(document, naturalPerson.document)
                 && Objects.equals(birthDate, naturalPerson.birthDate)
                 && Objects.equals(gender, naturalPerson.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, document, birthDate, gender);
+        return Objects.hash(document, birthDate, gender);
     }
 
 
@@ -136,9 +105,9 @@ public class NaturalPerson extends User {
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        return "{" + " id='" + getId() + "'" + ", document='" + getDocument()
-                + "'" + ", birthDate='" + sdf.format(birthDate.getTime()) + "'"
-                + ", gender='" + getGender() + "'" + "}";
+        return "{" + " document='" + getDocument() + "'" + ", birthDate='"
+                + sdf.format(birthDate.getTime()) + "'" + ", gender='"
+                + getGender() + "'" + "}";
     }
 
 
