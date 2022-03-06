@@ -10,6 +10,7 @@ import javax.persistence.Persistence;
 import com.smartguardian.domain.entity.Address;
 import com.smartguardian.domain.entity.Phone;
 import com.smartguardian.domain.entity.User;
+import org.apache.logging.log4j.core.util.Assert;
 
 public class CreateTest {
 
@@ -59,6 +60,17 @@ public class CreateTest {
 				entityManager.getTransaction().rollback();
 			}
 		}
+		entityManager.clear();
+
+		// Check if created
+		User record = entityManager.find(User.class, user.getId());
+		assert (record.getName().equals("Arthur Silva"));
+		assert (record.getEmail().equals("arthur@example.com"));
+		assert (record.getPassword().equals("123"));
+		assert (record.getPassword().equals("123"));
+		assert (record.getAddressList().get(0).getAddress().equals("Rua Acre"));
+		assert (record.getPhoneList().get(0).getPhoneNumber()
+				.equals("055016997037819"));
 
 		entityManager.close();
 		entityManagerFactory.close();

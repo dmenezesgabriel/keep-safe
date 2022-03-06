@@ -14,12 +14,6 @@ mvn clean package \
   -Dmaven.test.skip -DskipTests && \
 mvn -e exec:java \
   -Dexec.cleanupDaemonThreads=false \
-  -Dexec.mainClass="com.smartguardian.test.DeleteTest"
-
-mvn clean package \
-  -Dmaven.test.skip -DskipTests && \
-mvn -e exec:java \
-  -Dexec.cleanupDaemonThreads=false \
   -Dexec.mainClass="com.smartguardian.test.ReadTest"
 
 mvn clean package \
@@ -27,4 +21,12 @@ mvn clean package \
 mvn -e exec:java \
   -Dexec.cleanupDaemonThreads=false \
   -Dexec.mainClass="com.smartguardian.test.UpdateTest"
+
+mvn clean package \
+  -Dmaven.test.skip -DskipTests && \
+mvn -e exec:java \
+  -Dexec.cleanupDaemonThreads=false \
+  -Dexec.mainClass="com.smartguardian.test.DeleteTest"
+
+
 

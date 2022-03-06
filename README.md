@@ -11,6 +11,12 @@ Think smart & keep safe. We'll help you avoid any danger.
 
 Change `src\main\resources\META-INF\persistence.xml` with your credentials.
 
+**Run**:
+
+```sh
+./run.sh
+```
+
 ## Development
 
 ### Styling
