@@ -52,6 +52,15 @@
         <version>42.3.3</version>
     </dependency>
 		<!-- end::postgres[] -->
+		<!-- tag::oracle[] -->
+    <dependency>
+    	<groupId>oracle</groupId>
+    	<artifactId>jdbc-driver</artifactId>
+    	<version>12</version>
+    	<scope>system</scope>
+    	<systemPath>/home/arthur/Downloads/ojdbc8.jar</systemPath>
+    </dependency>
+		<!-- end::oracle[] -->
 		<!-- tag::H2[] -->
     <dependency>
         <groupId>com.h2database</groupId>
