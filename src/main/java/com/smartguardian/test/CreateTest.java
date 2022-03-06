@@ -10,7 +10,6 @@ import javax.persistence.Persistence;
 import com.smartguardian.domain.entity.Address;
 import com.smartguardian.domain.entity.Phone;
 import com.smartguardian.domain.entity.User;
-import org.apache.logging.log4j.core.util.Assert;
 
 public class CreateTest {
 

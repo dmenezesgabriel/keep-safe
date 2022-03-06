@@ -9,7 +9,6 @@ import javax.persistence.Persistence;
 import com.smartguardian.domain.entity.Address;
 import com.smartguardian.domain.entity.Phone;
 import com.smartguardian.domain.entity.User;
-import java.util.List;
 import java.util.ArrayList;
 
 public class ReadTest {
