@@ -21,32 +21,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("issue/status")
 public class IssueStatusResource {
     @Autowired
-    private IssueStatusRepository issuestatusRepository;
+    private IssueStatusRepository issueStatusRepository;
 
     @GetMapping
     public List<IssueStatus> findAll() {
-        return issuestatusRepository.findAll();
+        return issueStatusRepository.findAll();
     }
 
     @GetMapping("{id}")
     public IssueStatus findById(@PathVariable int id) {
-        return issuestatusRepository.findById(id).get();
+        return issueStatusRepository.findById(id).get();
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping
-    public IssueStatus create(@RequestBody IssueStatus issuestatus) {
-        return issuestatusRepository.save(issuestatus);
+    public IssueStatus create(@RequestBody IssueStatus issueStatus) {
+        return issueStatusRepository.save(issueStatus);
     }
 
     @PutMapping("{id}")
-    public IssueStatus update(@RequestBody IssueStatus issuestatus, @PathVariable int id) {
-        issuestatus.setId(id);
-        return issuestatusRepository.save(issuestatus);
+    public IssueStatus update(@RequestBody IssueStatus issueStatus,
+            @PathVariable int id) {
+        issueStatus.setId(id);
+        return issueStatusRepository.save(issueStatus);
     }
 
     @DeleteMapping("{id}")
     public void delete(@PathVariable int id) {
-        issuestatusRepository.deleteById(id);
+        issueStatusRepository.deleteById(id);
     }
 }
