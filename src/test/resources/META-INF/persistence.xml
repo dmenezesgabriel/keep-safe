@@ -1,53 +1,48 @@
 <!-- src/test/resources/META-INF/persistence.xml -->
-<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
-             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
-             version="2.1">
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" version="2.1">
 
-    <!-- transaction-type -->
-    <!-- - RESOURCE_LOCAL -->
-    <!-- - JTA -->
-    <persistence-unit name="com.smartguardian" transaction-type="RESOURCE_LOCAL">
-      <!-- Framework used for JPA especification -->
-      <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-      <class>com.smartguardian.domain.entity.User</class>
-      <class>com.smartguardian.domain.entity.LegalPerson</class>
-      <class>com.smartguardian.domain.entity.NaturalPerson</class>
-      <class>com.smartguardian.domain.entity.Issue</class>
-      <class>com.smartguardian.domain.entity.IssueType</class>
-      <class>com.smartguardian.domain.entity.IssueStatus</class>
-      <class>com.smartguardian.domain.entity.Phone</class>
-      <class>com.smartguardian.domain.entity.Address</class>
+  <!-- transaction-type -->
+  <!-- - RESOURCE_LOCAL -->
+  <!-- - JTA -->
+  <persistence-unit name="com.smartguardian" transaction-type="RESOURCE_LOCAL">
+    <!-- Framework used for JPA especification -->
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <class>com.smartguardian.keepsafe.model.User</class>
+    <class>com.smartguardian.keepsafe.model.LegalPerson</class>
+    <class>com.smartguardian.keepsafe.model.NaturalPerson</class>
+    <class>com.smartguardian.keepsafe.model.Issue</class>
+    <class>com.smartguardian.keepsafe.model.IssueType</class>
+    <class>com.smartguardian.keepsafe.model.IssueStatus</class>
+    <class>com.smartguardian.keepsafe.model.Phone</class>
+    <class>com.smartguardian.keepsafe.model.Address</class>
 
 
-
-
-        <properties>
-            <!-- Database Driver -->
-            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-            <!-- Database connection uri -->
-            <!-- "jdbc:sgdb_name://hostbl_address:portbl_number/database_name" -->
-            <!-- - When using docker, host addres is the container name -->
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test" />
-            <!-- Database User -->
-            <property name="javax.persistence.jdbc.user" value="" />
-            <!-- Database Password -->
-            <property name="javax.persistence.jdbc.password" value="" />
+    <properties>
+      <!-- Database Driver -->
+      <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
+      <!-- Database connection uri -->
+      <!-- "jdbc:sgdb_name://hostbl_address:portbl_number/database_name" -->
+      <!-- - When using docker, host addres is the container name -->
+      <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test" />
+      <!-- Database User -->
+      <property name="javax.persistence.jdbc.user" value="" />
+      <!-- Database Password -->
+      <property name="javax.persistence.jdbc.password" value="" />
       <!-- Database Dialect -->
-	    <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-            <!-- create / create-drop / update -->
-            <!-- - create: creates database from scratch using definitions -->
-            <!-- - update: try to update new attributes -->
-            <!-- - validate: verify if the entities are compatible with db tables -->
-            <property name="hibernate.hbm2ddl.auto" value="create" />
-            <!-- Show SQL in console -->
-            <!-- Should be disabled in production -->
-            <property name="hibernate.show_sql" value="true" />
-            <!-- Show SQL formatted -->
-            <property name="hibernate.formatbl_sql" value="true" />
-        </properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+      <!-- create / create-drop / update -->
+      <!-- - create: creates database from scratch using definitions -->
+      <!-- - update: try to update new attributes -->
+      <!-- - validate: verify if the entities are compatible with db tables -->
+      <property name="hibernate.hbm2ddl.auto" value="create" />
+      <!-- Show SQL in console -->
+      <!-- Should be disabled in production -->
+      <property name="hibernate.show_sql" value="true" />
+      <!-- Show SQL formatted -->
+      <property name="hibernate.formatbl_sql" value="true" />
+    </properties>
 
-    </persistence-unit>
+  </persistence-unit>
 
 </persistence>
