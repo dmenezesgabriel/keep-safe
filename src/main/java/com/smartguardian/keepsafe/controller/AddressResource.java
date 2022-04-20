@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("address")
@@ -30,7 +32,18 @@ public class AddressResource {
 
     @GetMapping("{id}")
     public Address findById(@PathVariable int id) {
-        return addressRepository.findById(id).get();
+        try {
+            Address address = addressRepository.findById(id).get();
+            return address;
+        } catch (Error error) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Address not found", error);
+        }
+    }
+
+    @GetMapping("/user")
+    public List<Address> findByUserId(@RequestParam int userId) {
+        return addressRepository.findByUserId(userId);
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -41,7 +54,9 @@ public class AddressResource {
 
     @PutMapping("{id}")
     public Address update(@RequestBody Address address, @PathVariable int id) {
+        Address requestedAddress = addressRepository.findById(id).get();
         address.setId(id);
+        address.setCreatedAt(requestedAddress.getCreatedAt());
         return addressRepository.save(address);
     }
 

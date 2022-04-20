@@ -19,9 +19,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.util.Objects;
@@ -32,44 +34,60 @@ public class Issue implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "tbl_ocorrencia_cd_ocorrencia_seq", sequenceName = "tbl_ocorrencia_cd_ocorrencia_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_ocorrencia_cd_ocorrencia_seq")
+    @SequenceGenerator(name = "tbl_ocorrencia_cd_ocorrencia_seq",
+            sequenceName = "tbl_ocorrencia_cd_ocorrencia_seq",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "tbl_ocorrencia_cd_ocorrencia_seq")
     @Column(name = "cd_ocorrencia", updatable = false)
     private int id;
 
+    @NotBlank(message = "Name is required")
+    @NotNull(message = "Name may not be null")
+    @NotEmpty(message = "Name may not be empty")
     @Column(name = "ds_ocorrencia", nullable = false, length = 300)
     private String description;
 
+    @NotBlank(message = "Latitude is required")
+    @NotNull(message = "Latitude may not be null")
+    @NotEmpty(message = "Latitude may not be empty")
     @Column(name = "vl_latitude_ocorrencia", nullable = false, length = 50)
     private String latitude;
 
+    @NotBlank(message = "Longitude is required")
+    @NotNull(message = "Longitude may not be null")
+    @NotEmpty(message = "Longitude may not be empty")
     @Column(name = "vl_longitude_ocorrencia", nullable = false, length = 50)
     private String longitude;
 
+    @NotNull(message = "Issue type may not be null")
     @ManyToOne
     @JoinColumn(name = "cd_tipo_ocorrencia")
     private IssueType issueType;
 
+    @NotNull(message = "Issue status may not be null")
     @ManyToOne
     @JoinColumn(name = "cd_status_ocorrencia")
     private IssueStatus issueStatus;
 
+    @NotNull(message = "User status may not be null")
     @ManyToOne
     @JoinColumn(name = "cd_usuario")
     private User user;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE", updatable = false)
+    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE",
+            updatable = false)
     private Calendar createdAt;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_atualizacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "dt_atualizacao",
+            columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
-    public Issue() {
-    }
+    public Issue() {}
 
     public Issue(int id, String description, String latitude, String longitude,
             IssueType issueType, IssueStatus issueStatus, User user,

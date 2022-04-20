@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("issue/status")
@@ -30,7 +31,13 @@ public class IssueStatusResource {
 
     @GetMapping("{id}")
     public IssueStatus findById(@PathVariable int id) {
-        return issueStatusRepository.findById(id).get();
+        try {
+            IssueStatus issueStatus = issueStatusRepository.findById(id).get();
+            return issueStatus;
+        } catch (Exception error) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Issue Status not found", error);
+        }
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -42,7 +49,10 @@ public class IssueStatusResource {
     @PutMapping("{id}")
     public IssueStatus update(@RequestBody IssueStatus issueStatus,
             @PathVariable int id) {
+        IssueStatus requestedIssueStatus =
+                issueStatusRepository.findById(id).get();
         issueStatus.setId(id);
+        issueStatus.setCreatedAt(requestedIssueStatus.getCreatedAt());
         return issueStatusRepository.save(issueStatus);
     }
 

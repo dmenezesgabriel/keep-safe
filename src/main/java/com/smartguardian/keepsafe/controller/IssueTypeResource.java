@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("issue/type")
@@ -30,7 +31,13 @@ public class IssueTypeResource {
 
     @GetMapping("{id}")
     public IssueType findById(@PathVariable int id) {
-        return issueTypeRepository.findById(id).get();
+        try {
+            IssueType issueType = issueTypeRepository.findById(id).get();
+            return issueType;
+        } catch (Exception error) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Issue Type not found", error);
+        }
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -40,7 +47,8 @@ public class IssueTypeResource {
     }
 
     @PutMapping("{id}")
-    public IssueType update(@RequestBody IssueType issueType, @PathVariable int id) {
+    public IssueType update(@RequestBody IssueType issueType,
+            @PathVariable int id) {
         issueType.setId(id);
         return issueTypeRepository.save(issueType);
     }

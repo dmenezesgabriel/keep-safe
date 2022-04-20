@@ -19,6 +19,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
@@ -32,11 +34,16 @@ public class IssueStatus implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "tbl_status_ocorrencia_cd_status_ocorrencia_seq", sequenceName = "tbl_status_ocorrencia_cd_status_ocorrencia_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_status_ocorrencia_cd_status_ocorrencia_seq")
+    @SequenceGenerator(name = "tbl_status_ocorrencia_cd_status_ocorrencia_seq",
+            sequenceName = "tbl_status_ocorrencia_cd_status_ocorrencia_seq",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "tbl_status_ocorrencia_cd_status_ocorrencia_seq")
     @Column(name = "cd_status_ocorrencia", updatable = false)
     private int id;
 
+    @NotBlank(message = "Name is required")
+    @NotNull(message = "Name may not be null")
     @Column(name = "nm_status_ocorrencia", nullable = false, length = 50)
     private String name;
 
@@ -45,16 +52,17 @@ public class IssueStatus implements Serializable {
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE", updatable = false)
+    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE",
+            updatable = false)
     private Calendar createdAt;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_atualizacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "dt_atualizacao",
+            columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
-    public IssueStatus() {
-    }
+    public IssueStatus() {}
 
     public IssueStatus(int id, String name, Calendar createdAt,
             Calendar updatedAt) {

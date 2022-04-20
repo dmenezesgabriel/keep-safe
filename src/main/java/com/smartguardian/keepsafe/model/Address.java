@@ -80,9 +80,7 @@ public class Address implements Serializable {
     @Column(name = "nr_cep_endereco", nullable = false, length = 8)
     private String postalCode;
 
-    @NotBlank(message = "User id is required!")
     @NotNull(message = "User id may not be null!")
-    @NotEmpty(message = "User id may not be empty!")
     @Column(name = "cd_usuario", nullable = false)
     private int userId;
 

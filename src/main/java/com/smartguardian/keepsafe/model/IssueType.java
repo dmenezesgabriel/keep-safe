@@ -21,6 +21,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
@@ -34,14 +36,20 @@ public class IssueType implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq", sequenceName = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq")
+    @SequenceGenerator(name = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq",
+            sequenceName = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq",
+            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "tbl_tipo_ocorrencia_cd_tipo_ocorrencia_seq")
     @Column(name = "cd_tipo_ocorrencia", updatable = false)
     private int id;
 
+    @NotBlank(message = "Name is required")
+    @NotNull(message = "Name may not be null")
     @Column(name = "nm_tipo_ocorrencia", nullable = false, length = 50)
     private String name;
 
+    @NotNull(message = "Legal person may not be null")
     @ManyToOne
     @JoinColumn(name = "cd_usuario")
     private LegalPerson legalPerson;
@@ -51,16 +59,17 @@ public class IssueType implements Serializable {
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE", updatable = false)
+    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE",
+            updatable = false)
     private Calendar createdAt;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_atualizacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "dt_atualizacao",
+            columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
-    public IssueType() {
-    }
+    public IssueType() {}
 
     public IssueType(int id, String name, LegalPerson legalPerson,
             List<Issue> issueList, Calendar createdAt, Calendar updatedAt) {
