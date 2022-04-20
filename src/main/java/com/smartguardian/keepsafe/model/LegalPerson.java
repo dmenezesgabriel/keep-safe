@@ -9,8 +9,10 @@ package com.smartguardian.keepsafe.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 import java.util.List;
@@ -20,19 +22,18 @@ import java.util.List;
 public class LegalPerson extends User {
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "nr_cnpj_pessoa_juridica", nullable = false, length = 14)
+    @NotBlank(message = "Document is required!")
+    @NotNull(message = "Document may not be null!")
+    @NotEmpty(message = "Document may not be empty!")
+    @Column(name = "nr_cnpj_pessoa_juridica", nullable = false, length = 14,
+            unique = true)
     private String document;
 
-    @OneToMany(mappedBy = "legalPerson")
-    private List<IssueType> issueTypeList;
-
-    public LegalPerson() {
-    }
+    public LegalPerson() {}
 
     public LegalPerson(String document, List<IssueType> issueTypeList) {
         super();
         this.document = document;
-        this.issueTypeList = issueTypeList;
     }
 
     public String getDocument() {
@@ -43,26 +44,8 @@ public class LegalPerson extends User {
         this.document = document;
     }
 
-    public List<IssueType> getIssueTypeList() {
-        return issueTypeList;
-    }
-
-    public void setIssueTypeList(List<IssueType> issueTypeList) {
-        this.issueTypeList = issueTypeList;
-    }
-
     public LegalPerson document(String document) {
         setDocument(document);
-        return this;
-    }
-
-    public LegalPerson issueType(IssueType issueType) {
-        this.issueTypeList.add(issueType);
-        return this;
-    }
-
-    public LegalPerson issueTypeList(List<IssueType> issueTypeList) {
-        setIssueTypeList(issueTypeList);
         return this;
     }
 
@@ -74,19 +57,17 @@ public class LegalPerson extends User {
             return false;
         }
         LegalPerson legalPerson = (LegalPerson) o;
-        return Objects.equals(document, legalPerson.document)
-                && Objects.equals(issueTypeList, legalPerson.issueTypeList);
+        return Objects.equals(document, legalPerson.document);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(document, issueTypeList);
+        return Objects.hash(document);
     }
 
     @Override
     public String toString() {
-        return "LegalPerson [document=" + document + ", issueTypeList="
-                + issueTypeList + "]";
+        return "LegalPerson [document=" + document + "]";
     }
 
 }

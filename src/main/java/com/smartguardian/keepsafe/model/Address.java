@@ -8,24 +8,22 @@ package com.smartguardian.keepsafe.model;
  */
 import java.util.Calendar;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_endereco")
@@ -33,52 +31,78 @@ public class Address implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "tbl_endereco_cd_endereco_seq", sequenceName = "tbl_endereco_cd_endereco_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_endereco_cd_endereco_seq")
+    @SequenceGenerator(name = "tbl_endereco_cd_endereco_seq",
+            sequenceName = "tbl_endereco_cd_endereco_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "tbl_endereco_cd_endereco_seq")
     @Column(name = "cd_endereco", updatable = false)
     private int id;
 
+    @NotBlank(message = "Address is required!")
+    @NotNull(message = "Address may not be null!")
+    @NotEmpty(message = "Address may not be empty!")
     @Column(name = "ds_logradouro_endereco", nullable = false, length = 150)
     private String address;
 
+    @NotBlank(message = "Address number is required!")
+    @NotNull(message = "Address number may not be null!")
+    @NotEmpty(message = "Address number may not be empty!")
     @Column(name = "nr_numero_endereco", nullable = false, length = 10)
     private String addressNumber;
 
+    @NotBlank(message = "District is required!")
+    @NotNull(message = "District may not be null!")
+    @NotEmpty(message = "District may not be empty!")
     @Column(name = "ds_bairro_endereco", nullable = false, length = 30)
     private String district;
 
+    @NotBlank(message = "City is required!")
+    @NotNull(message = "City may not be null!")
+    @NotEmpty(message = "City may not be empty!")
     @Column(name = "ds_cidade_endereco", nullable = false, length = 30)
     private String city;
 
+    @NotBlank(message = "State is required!")
+    @NotNull(message = "State may not be null!")
+    @NotEmpty(message = "State may not be empty!")
     @Column(name = "ds_estado_endereco", nullable = false, length = 30)
     private String state;
 
+    @NotBlank(message = "Complement is required!")
+    @NotNull(message = "Complement may not be null!")
+    @NotEmpty(message = "Complement may not be empty!")
     @Column(name = "ds_complemento_endereco", nullable = false, length = 150)
     private String complement;
 
+    @NotBlank(message = "Postal code is required!")
+    @NotNull(message = "Postal code may not be null!")
+    @NotEmpty(message = "Postal code may not be empty!")
     @Column(name = "nr_cep_endereco", nullable = false, length = 8)
     private String postalCode;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "cd_usuario")
-    private User user;
+    @NotBlank(message = "User id is required!")
+    @NotNull(message = "User id may not be null!")
+    @NotEmpty(message = "User id may not be empty!")
+    @Column(name = "cd_usuario", nullable = false)
+    private int userId;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE", updatable = false)
+    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE",
+            updatable = false)
     private Calendar createdAt;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_atualizacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "dt_atualizacao",
+            columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
-    public Address() {
-    }
+    public Address() {}
 
     public Address(int id, String address, String addressNumber,
             String district, String city, String state, String complement,
-            String postalCode, User user, Calendar createdAt,
+            String postalCode, int userId, Calendar createdAt,
             Calendar updatedAt) {
         this.id = id;
         this.address = address;
@@ -88,13 +112,13 @@ public class Address implements Serializable {
         this.state = state;
         this.complement = complement;
         this.postalCode = postalCode;
-        this.user = user;
+        this.userId = userId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
     public int getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(int id) {
@@ -102,7 +126,7 @@ public class Address implements Serializable {
     }
 
     public String getAddress() {
-        return this.address;
+        return address;
     }
 
     public void setAddress(String address) {
@@ -110,7 +134,7 @@ public class Address implements Serializable {
     }
 
     public String getAddressNumber() {
-        return this.addressNumber;
+        return addressNumber;
     }
 
     public void setAddressNumber(String addressNumber) {
@@ -118,7 +142,7 @@ public class Address implements Serializable {
     }
 
     public String getDistrict() {
-        return this.district;
+        return district;
     }
 
     public void setDistrict(String district) {
@@ -126,7 +150,7 @@ public class Address implements Serializable {
     }
 
     public String getCity() {
-        return this.city;
+        return city;
     }
 
     public void setCity(String city) {
@@ -134,7 +158,7 @@ public class Address implements Serializable {
     }
 
     public String getState() {
-        return this.state;
+        return state;
     }
 
     public void setState(String state) {
@@ -142,7 +166,7 @@ public class Address implements Serializable {
     }
 
     public String getComplement() {
-        return this.complement;
+        return complement;
     }
 
     public void setComplement(String complement) {
@@ -150,23 +174,23 @@ public class Address implements Serializable {
     }
 
     public String getPostalCode() {
-        return this.postalCode;
+        return postalCode;
     }
 
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
     }
 
-    public User getUser() {
-        return this.user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public Calendar getCreatedAt() {
-        return this.createdAt;
+        return createdAt;
     }
 
     public void setCreatedAt(Calendar createdAt) {
@@ -174,107 +198,106 @@ public class Address implements Serializable {
     }
 
     public Calendar getUpdatedAt() {
-        return this.updatedAt;
+        return updatedAt;
     }
 
     public void setUpdatedAt(Calendar updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public Address id(int id) {
-        setId(id);
-        return this;
-    }
-
-    public Address address(String address) {
-        setAddress(address);
-        return this;
-    }
-
-    public Address addressNumber(String addressNumber) {
-        setAddressNumber(addressNumber);
-        return this;
-    }
-
-    public Address district(String district) {
-        setDistrict(district);
-        return this;
-    }
-
-    public Address city(String city) {
-        setCity(city);
-        return this;
-    }
-
-    public Address state(String state) {
-        setState(state);
-        return this;
-    }
-
-    public Address complement(String complement) {
-        setComplement(complement);
-        return this;
-    }
-
-    public Address postalCode(String postalCode) {
-        setPostalCode(postalCode);
-        return this;
-    }
-
-    public Address user(User user) {
-        setUser(user);
-        return this;
-    }
-
-    public Address createdAt(Calendar createdAt) {
-        setCreatedAt(createdAt);
-        return this;
-    }
-
-    public Address updatedAt(Calendar updatedAt) {
-        setUpdatedAt(updatedAt);
-        return this;
-    }
-
-    @SuppressWarnings("unlikely-arg-type")
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Address)) {
-            return false;
-        }
-        Address address = (Address) o;
-        return id == address.id && Objects.equals(address, address.address)
-                && Objects.equals(addressNumber, address.addressNumber)
-                && Objects.equals(district, address.district)
-                && Objects.equals(city, address.city)
-                && Objects.equals(state, address.state)
-                && Objects.equals(complement, address.complement)
-                && Objects.equals(postalCode, address.postalCode)
-                && Objects.equals(user, address.user)
-                && Objects.equals(createdAt, address.createdAt)
-                && Objects.equals(updatedAt, address.updatedAt);
-    }
-
     @Override
     public int hashCode() {
-        return Objects.hash(id, address, addressNumber, district, city, state,
-                complement, postalCode, user, createdAt, updatedAt);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((address == null) ? 0 : address.hashCode());
+        result = prime * result
+                + ((addressNumber == null) ? 0 : addressNumber.hashCode());
+        result = prime * result + ((city == null) ? 0 : city.hashCode());
+        result = prime * result
+                + ((complement == null) ? 0 : complement.hashCode());
+        result = prime * result
+                + ((createdAt == null) ? 0 : createdAt.hashCode());
+        result = prime * result
+                + ((district == null) ? 0 : district.hashCode());
+        result = prime * result + id;
+        result = prime * result
+                + ((postalCode == null) ? 0 : postalCode.hashCode());
+        result = prime * result + ((state == null) ? 0 : state.hashCode());
+        result = prime * result
+                + ((updatedAt == null) ? 0 : updatedAt.hashCode());
+        result = prime * result + userId;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Address other = (Address) obj;
+        if (address == null) {
+            if (other.address != null)
+                return false;
+        } else if (!address.equals(other.address))
+            return false;
+        if (addressNumber == null) {
+            if (other.addressNumber != null)
+                return false;
+        } else if (!addressNumber.equals(other.addressNumber))
+            return false;
+        if (city == null) {
+            if (other.city != null)
+                return false;
+        } else if (!city.equals(other.city))
+            return false;
+        if (complement == null) {
+            if (other.complement != null)
+                return false;
+        } else if (!complement.equals(other.complement))
+            return false;
+        if (createdAt == null) {
+            if (other.createdAt != null)
+                return false;
+        } else if (!createdAt.equals(other.createdAt))
+            return false;
+        if (district == null) {
+            if (other.district != null)
+                return false;
+        } else if (!district.equals(other.district))
+            return false;
+        if (id != other.id)
+            return false;
+        if (postalCode == null) {
+            if (other.postalCode != null)
+                return false;
+        } else if (!postalCode.equals(other.postalCode))
+            return false;
+        if (state == null) {
+            if (other.state != null)
+                return false;
+        } else if (!state.equals(other.state))
+            return false;
+        if (updatedAt == null) {
+            if (other.updatedAt != null)
+                return false;
+        } else if (!updatedAt.equals(other.updatedAt))
+            return false;
+        if (userId != other.userId)
+            return false;
+        return true;
     }
 
     @Override
     public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        return "{" + " id='" + getId() + "'" + ", address='" + getAddress()
-                + "'" + ", addressNumber='" + getAddressNumber() + "'"
-                + ", district='" + getDistrict() + "'" + ", city='" + getCity()
-                + "'" + ", state='" + getState() + "'" + ", complement='"
-                + getComplement() + "'" + ", postalCode='" + getPostalCode()
-                + "'" + ", user='" + getUser() + "'" + ", createdAt='"
-                + sdf.format(createdAt.getTime()) + "'" + ", updatedAt='"
-                + sdf.format(updatedAt.getTime()) + "'" + "}";
+        return "Address [address=" + address + ", addressNumber="
+                + addressNumber + ", city=" + city + ", complement="
+                + complement + ", createdAt=" + createdAt + ", district="
+                + district + ", id=" + id + ", postalCode=" + postalCode
+                + ", state=" + state + ", updatedAt=" + updatedAt + ", userId="
+                + userId + "]";
     }
 
 }
