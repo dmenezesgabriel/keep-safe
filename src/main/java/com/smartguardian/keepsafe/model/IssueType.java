@@ -49,10 +49,9 @@ public class IssueType implements Serializable {
     @Column(name = "nm_tipo_ocorrencia", nullable = false, length = 50)
     private String name;
 
-    @NotNull(message = "Legal person may not be null")
-    @ManyToOne
-    @JoinColumn(name = "cd_usuario")
-    private LegalPerson legalPerson;
+    @NotNull(message = "User Id may not be null!")
+    @Column(name = "cd_usuario", nullable = false)
+    private int userId;
 
     @OneToMany(mappedBy = "issueType")
     private List<Issue> issueList;
@@ -69,14 +68,14 @@ public class IssueType implements Serializable {
             columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
+
     public IssueType() {}
 
-    public IssueType(int id, String name, LegalPerson legalPerson,
-            List<Issue> issueList, Calendar createdAt, Calendar updatedAt) {
-        super();
+    public IssueType(int id, String name, int userId, List<Issue> issueList,
+            Calendar createdAt, Calendar updatedAt) {
         this.id = id;
         this.name = name;
-        this.legalPerson = legalPerson;
+        this.userId = userId;
         this.issueList = issueList;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -98,16 +97,16 @@ public class IssueType implements Serializable {
         this.name = name;
     }
 
-    public LegalPerson getLegalPerson() {
-        return legalPerson;
+    public int getUserId() {
+        return this.userId;
     }
 
-    public void setLegalPerson(LegalPerson legalPerson) {
-        this.legalPerson = legalPerson;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public List<Issue> getIssueList() {
-        return issueList;
+        return this.issueList;
     }
 
     public void setIssueList(List<Issue> issueList) {
@@ -140,13 +139,8 @@ public class IssueType implements Serializable {
         return this;
     }
 
-    public IssueType legalPerson(LegalPerson legalPerson) {
-        setLegalPerson(legalPerson);
-        return this;
-    }
-
-    public IssueType issue(Issue issue) {
-        this.issueList.add(issue);
+    public IssueType userId(int userId) {
+        setUserId(userId);
         return this;
     }
 
@@ -174,7 +168,7 @@ public class IssueType implements Serializable {
         }
         IssueType issueType = (IssueType) o;
         return id == issueType.id && Objects.equals(name, issueType.name)
-                && Objects.equals(legalPerson, issueType.legalPerson)
+                && userId == issueType.userId
                 && Objects.equals(issueList, issueType.issueList)
                 && Objects.equals(createdAt, issueType.createdAt)
                 && Objects.equals(updatedAt, issueType.updatedAt);
@@ -182,18 +176,18 @@ public class IssueType implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, legalPerson, issueList, createdAt,
-                updatedAt);
+        return Objects.hash(id, name, userId, issueList, createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-        return "IssueType [id=" + id + ", name=" + name + ", legalPerson="
-                + legalPerson + ", issueList=" + issueList + ", createdAt="
-                + sdf.format(createdAt.getTime()) + ", updatedAt="
-                + sdf.format(updatedAt.getTime()) + "]";
+        return "{" + " id='" + getId() + "'" + ", name='" + getName() + "'"
+                + ", userId='" + getUserId() + "'" + ", issueList='"
+                + getIssueList() + "'" + ", createdAt='"
+                + sdf.format(createdAt.getTime()) + "'" + ", updatedAt='"
+                + sdf.format(updatedAt.getTime()) + "'" + "}";
     }
 
 }
