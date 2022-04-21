@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("phone")
@@ -30,7 +32,18 @@ public class PhoneResource {
 
     @GetMapping("{id}")
     public Phone findById(@PathVariable int id) {
-        return phoneRepository.findById(id).get();
+        try {
+            Phone phone = phoneRepository.findById(id).get();
+            return phone;
+        } catch (Exception error) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Phone not found", error);
+        }
+    }
+
+    @GetMapping("/user")
+    public List<Phone> findByUserId(@RequestParam int userId) {
+        return phoneRepository.findByUserId(userId);
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -41,7 +54,9 @@ public class PhoneResource {
 
     @PutMapping("{id}")
     public Phone update(@RequestBody Phone phone, @PathVariable int id) {
+        Phone requestedPhone = phoneRepository.findById(id).get();
         phone.setId(id);
+        phone.setCreatedAt(requestedPhone.getCreatedAt());
         return phoneRepository.save(phone);
     }
 

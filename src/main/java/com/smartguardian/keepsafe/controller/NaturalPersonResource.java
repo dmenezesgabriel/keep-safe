@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("naturalperson")
@@ -30,7 +31,14 @@ public class NaturalPersonResource {
 
     @GetMapping("{id}")
     public NaturalPerson findById(@PathVariable int id) {
-        return naturalPersonRepository.findById(id).get();
+        try {
+            NaturalPerson naturalPerson =
+                    naturalPersonRepository.findById(id).get();
+            return naturalPerson;
+        } catch (Exception error) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Natural person not found", error);
+        }
     }
 
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -40,8 +48,11 @@ public class NaturalPersonResource {
     }
 
     @PutMapping("{id}")
-    public NaturalPerson update(@RequestBody NaturalPerson naturalPerson, @PathVariable int id) {
+    public NaturalPerson update(@RequestBody NaturalPerson naturalPerson,
+            @PathVariable int id) {
+        NaturalPerson user = naturalPersonRepository.findById(id).get();
         naturalPerson.setId(id);
+        naturalPerson.setCreatedAt(user.getCreatedAt());
         return naturalPersonRepository.save(naturalPerson);
     }
 

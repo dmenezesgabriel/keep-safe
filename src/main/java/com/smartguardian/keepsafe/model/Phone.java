@@ -8,25 +8,23 @@ package com.smartguardian.keepsafe.model;
  */
 import java.util.Calendar;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import java.util.Objects;
 
 @Entity
 @Table(name = "tbl_telefone")
@@ -34,42 +32,48 @@ public class Phone implements Serializable {
     protected static final long serialVersionUID = 1L;
 
     @Id
-    @SequenceGenerator(name = "tbl_telefone_cd_telefone_seq", sequenceName = "tbl_telefone_cd_telefone_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tbl_telefone_cd_telefone_seq")
+    @SequenceGenerator(name = "tbl_telefone_cd_telefone_seq",
+            sequenceName = "tbl_telefone_cd_telefone_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,
+            generator = "tbl_telefone_cd_telefone_seq")
     @Column(name = "cd_telefone", updatable = false)
     private int id;
 
+    @NotBlank(message = "Phone number is required!")
+    @NotNull(message = "Phone number may not be null!")
+    @NotEmpty(message = "Phone number may not be empty!")
     @Column(name = "nr_telefone", nullable = false, length = 15)
     private String phoneNumber;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "cd_usuario")
-    private User user;
+    @NotNull(message = "User Id may not be null!")
+    @Column(name = "cd_usuario", nullable = false)
+    private int userId;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE", updatable = false)
+    @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE",
+            updatable = false)
     private Calendar createdAt;
 
     @UpdateTimestamp
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "dt_atualizacao", columnDefinition = "TIMESTAMP WITH TIME ZONE")
+    @Column(name = "dt_atualizacao",
+            columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
-    public Phone() {
-    }
+    public Phone() {}
 
-    public Phone(int id, String phoneNumber, User user, Calendar createdAt,
+    public Phone(int id, String phoneNumber, int userId, Calendar createdAt,
             Calendar updatedAt) {
         this.id = id;
         this.phoneNumber = phoneNumber;
-        this.user = user;
+        this.userId = userId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
     public int getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(int id) {
@@ -77,23 +81,23 @@ public class Phone implements Serializable {
     }
 
     public String getPhoneNumber() {
-        return this.phoneNumber;
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public User getUser() {
-        return this.user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public Calendar getCreatedAt() {
-        return this.createdAt;
+        return createdAt;
     }
 
     public void setCreatedAt(Calendar createdAt) {
@@ -101,65 +105,64 @@ public class Phone implements Serializable {
     }
 
     public Calendar getUpdatedAt() {
-        return this.updatedAt;
+        return updatedAt;
     }
 
     public void setUpdatedAt(Calendar updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    public Phone id(int id) {
-        setId(id);
-        return this;
-    }
-
-    public Phone phoneNumber(String phoneNumber) {
-        setPhoneNumber(phoneNumber);
-        return this;
-    }
-
-    public Phone user(User user) {
-        setUser(user);
-        return this;
-    }
-
-    public Phone createdAt(Calendar createdAt) {
-        setCreatedAt(createdAt);
-        return this;
-    }
-
-    public Phone updatedAt(Calendar updatedAt) {
-        setUpdatedAt(updatedAt);
-        return this;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this)
-            return true;
-        if (!(o instanceof Phone)) {
-            return false;
-        }
-        Phone phone = (Phone) o;
-        return id == phone.id && Objects.equals(phoneNumber, phone.phoneNumber)
-                && Objects.equals(user, phone.user)
-                && Objects.equals(createdAt, phone.createdAt)
-                && Objects.equals(updatedAt, phone.updatedAt);
-    }
-
     @Override
     public int hashCode() {
-        return Objects.hash(id, phoneNumber, user, createdAt, updatedAt);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((createdAt == null) ? 0 : createdAt.hashCode());
+        result = prime * result + id;
+        result = prime * result
+                + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
+        result = prime * result
+                + ((updatedAt == null) ? 0 : updatedAt.hashCode());
+        result = prime * result + userId;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Phone other = (Phone) obj;
+        if (createdAt == null) {
+            if (other.createdAt != null)
+                return false;
+        } else if (!createdAt.equals(other.createdAt))
+            return false;
+        if (id != other.id)
+            return false;
+        if (phoneNumber == null) {
+            if (other.phoneNumber != null)
+                return false;
+        } else if (!phoneNumber.equals(other.phoneNumber))
+            return false;
+        if (updatedAt == null) {
+            if (other.updatedAt != null)
+                return false;
+        } else if (!updatedAt.equals(other.updatedAt))
+            return false;
+        if (userId != other.userId)
+            return false;
+        return true;
     }
 
     @Override
     public String toString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        return "{" + " id='" + getId() + "'" + ", phoneNumber='"
-                + getPhoneNumber() + "'" + ", user='" + getUser() + "'"
-                + ", createdAt='" + sdf.format(createdAt.getTime()) + "'"
-                + ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" + "}";
+        return "Phone [createdAt=" + createdAt + ", id=" + id + ", phoneNumber="
+                + phoneNumber + ", updatedAt=" + updatedAt + ", userId="
+                + userId + "]";
     }
 
 }

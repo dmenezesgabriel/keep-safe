@@ -6,11 +6,16 @@ package com.smartguardian.keepsafe.model;
  * @author Smart Guardian Group
  * @version 1.0
  */
-
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 import java.util.List;
@@ -20,17 +25,21 @@ import java.util.List;
 public class LegalPerson extends User {
     private static final long serialVersionUID = 1L;
 
-    @Column(name = "nr_cnpj_pessoa_juridica", nullable = false, length = 14)
+    @NotBlank(message = "Document is required!")
+    @NotNull(message = "Document may not be null!")
+    @NotEmpty(message = "Document may not be empty!")
+    @Column(name = "nr_cnpj_pessoa_juridica", nullable = false, length = 14,
+            unique = true)
     private String document;
 
-    @OneToMany(mappedBy = "legalPerson")
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "cd_usuario", referencedColumnName = "cd_usuario")
     private List<IssueType> issueTypeList;
 
-    public LegalPerson() {
-    }
+
+    public LegalPerson() {}
 
     public LegalPerson(String document, List<IssueType> issueTypeList) {
-        super();
         this.document = document;
         this.issueTypeList = issueTypeList;
     }
@@ -44,7 +53,7 @@ public class LegalPerson extends User {
     }
 
     public List<IssueType> getIssueTypeList() {
-        return issueTypeList;
+        return this.issueTypeList;
     }
 
     public void setIssueTypeList(List<IssueType> issueTypeList) {
@@ -53,11 +62,6 @@ public class LegalPerson extends User {
 
     public LegalPerson document(String document) {
         setDocument(document);
-        return this;
-    }
-
-    public LegalPerson issueType(IssueType issueType) {
-        this.issueTypeList.add(issueType);
         return this;
     }
 
@@ -85,8 +89,9 @@ public class LegalPerson extends User {
 
     @Override
     public String toString() {
-        return "LegalPerson [document=" + document + ", issueTypeList="
-                + issueTypeList + "]";
+        return "{" + " document='" + getDocument() + "'" + ", issueTypeList='"
+                + getIssueTypeList() + "'" + "}";
     }
+
 
 }
