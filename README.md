@@ -1,3 +1,3 @@
 # Keep Safe
 
-[Swagger - API docs](http://localhost:8080/swagger-ui/index.html#/)
+Swagger (API docs -localhost) http://localhost:8080/swagger-ui/index.html
