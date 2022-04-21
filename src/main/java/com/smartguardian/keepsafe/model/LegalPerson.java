@@ -18,8 +18,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
-import java.util.List;
-
 @Entity
 @Table(name = "tbl_pessoa_juridica")
 public class LegalPerson extends User {
