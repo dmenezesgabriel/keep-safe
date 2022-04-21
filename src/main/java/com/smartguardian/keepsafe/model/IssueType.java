@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.CascadeType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -53,7 +54,9 @@ public class IssueType implements Serializable {
     @Column(name = "cd_usuario", nullable = false)
     private int userId;
 
-    @OneToMany(mappedBy = "issueType")
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "cd_tipo_ocorrencia",
+            referencedColumnName = "cd_tipo_ocorrencia")
     private List<Issue> issueList;
 
     @CreationTimestamp

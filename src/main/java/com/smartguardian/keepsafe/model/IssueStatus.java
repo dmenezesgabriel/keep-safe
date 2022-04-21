@@ -12,8 +12,11 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.CascadeType;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -47,7 +50,9 @@ public class IssueStatus implements Serializable {
     @Column(name = "nm_status_ocorrencia", nullable = false, length = 50)
     private String name;
 
-    @OneToMany(mappedBy = "issueStatus")
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "cd_status_ocorrencia",
+            referencedColumnName = "cd_status_ocorrencia")
     private List<Issue> issueList;
 
     @CreationTimestamp
@@ -62,12 +67,14 @@ public class IssueStatus implements Serializable {
             columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
+
     public IssueStatus() {}
 
-    public IssueStatus(int id, String name, Calendar createdAt,
-            Calendar updatedAt) {
+    public IssueStatus(int id, String name, List<Issue> issueList,
+            Calendar createdAt, Calendar updatedAt) {
         this.id = id;
         this.name = name;
+        this.issueList = issueList;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -89,7 +96,7 @@ public class IssueStatus implements Serializable {
     }
 
     public List<Issue> getIssueList() {
-        return issueList;
+        return this.issueList;
     }
 
     public void setIssueList(List<Issue> issueList) {
@@ -122,13 +129,18 @@ public class IssueStatus implements Serializable {
         return this;
     }
 
-    public IssueStatus issue(Issue issue) {
-        this.issueList.add(issue);
+    public IssueStatus issueList(List<Issue> issueList) {
+        setIssueList(issueList);
         return this;
     }
 
-    public IssueStatus issueList(List<Issue> issueList) {
-        setIssueList(issueList);
+    public IssueStatus createdAt(Calendar createdAt) {
+        setCreatedAt(createdAt);
+        return this;
+    }
+
+    public IssueStatus updatedAt(Calendar updatedAt) {
+        setUpdatedAt(updatedAt);
         return this;
     }
 
@@ -141,13 +153,14 @@ public class IssueStatus implements Serializable {
         }
         IssueStatus issueStatus = (IssueStatus) o;
         return id == issueStatus.id && Objects.equals(name, issueStatus.name)
+                && Objects.equals(issueList, issueStatus.issueList)
                 && Objects.equals(createdAt, issueStatus.createdAt)
                 && Objects.equals(updatedAt, issueStatus.updatedAt);
     }
 
-    public IssueStatus updatedAt(Calendar updatedAt) {
-        setUpdatedAt(updatedAt);
-        return this;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, issueList, createdAt, updatedAt);
     }
 
     @Override
@@ -155,8 +168,11 @@ public class IssueStatus implements Serializable {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         return "{" + " id='" + getId() + "'" + ", name='" + getName() + "'"
-                + ", createdAt='" + sdf.format(createdAt.getTime()) + "'"
-                + ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" + "}";
+                + ", issueList='" + getIssueList() + "'" + ", createdAt='"
+                + sdf.format(createdAt.getTime()) + "'" + ", updatedAt='"
+                + sdf.format(updatedAt.getTime()) + "'" + "}";
     }
+
+
 
 }

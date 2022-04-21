@@ -28,6 +28,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
+import java.text.SimpleDateFormat;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -79,6 +81,10 @@ public class User implements Serializable {
     @JoinColumn(name = "cd_usuario", referencedColumnName = "cd_usuario")
     private List<Phone> phoneList;
 
+    @OneToMany(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "cd_usuario", referencedColumnName = "cd_usuario")
+    private List<Issue> issueList;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "dt_criacao", columnDefinition = "TIMESTAMP WITH TIME ZONE",
@@ -91,21 +97,25 @@ public class User implements Serializable {
             columnDefinition = "TIMESTAMP WITH TIME ZONE")
     private Calendar updatedAt;
 
+
     public User() {}
 
     public User(int id, String name, String email, String password,
-            List<Phone> phoneList, Calendar createdAt, Calendar updatedAt) {
+            List<Address> addressList, List<Phone> phoneList,
+            List<Issue> issueList, Calendar createdAt, Calendar updatedAt) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.addressList = addressList;
         this.phoneList = phoneList;
+        this.issueList = issueList;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -113,7 +123,7 @@ public class User implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -121,7 +131,7 @@ public class User implements Serializable {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setEmail(String email) {
@@ -129,23 +139,39 @@ public class User implements Serializable {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
+    public List<Address> getAddressList() {
+        return this.addressList;
+    }
+
+    public void setAddressList(List<Address> addressList) {
+        this.addressList = addressList;
+    }
+
     public List<Phone> getPhoneList() {
-        return phoneList;
+        return this.phoneList;
     }
 
     public void setPhoneList(List<Phone> phoneList) {
         this.phoneList = phoneList;
     }
 
+    public List<Issue> getIssueList() {
+        return this.issueList;
+    }
+
+    public void setIssueList(List<Issue> issueList) {
+        this.issueList = issueList;
+    }
+
     public Calendar getCreatedAt() {
-        return createdAt;
+        return this.createdAt;
     }
 
     public void setCreatedAt(Calendar createdAt) {
@@ -153,80 +179,90 @@ public class User implements Serializable {
     }
 
     public Calendar getUpdatedAt() {
-        return updatedAt;
+        return this.updatedAt;
     }
 
     public void setUpdatedAt(Calendar updatedAt) {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result
-                + ((createdAt == null) ? 0 : createdAt.hashCode());
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
-        result = prime * result + id;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result
-                + ((password == null) ? 0 : password.hashCode());
-        result = prime * result
-                + ((phoneList == null) ? 0 : phoneList.hashCode());
-        result = prime * result
-                + ((updatedAt == null) ? 0 : updatedAt.hashCode());
-        return result;
+    public User id(int id) {
+        setId(id);
+        return this;
+    }
+
+    public User name(String name) {
+        setName(name);
+        return this;
+    }
+
+    public User email(String email) {
+        setEmail(email);
+        return this;
+    }
+
+    public User password(String password) {
+        setPassword(password);
+        return this;
+    }
+
+    public User addressList(List<Address> addressList) {
+        setAddressList(addressList);
+        return this;
+    }
+
+    public User phoneList(List<Phone> phoneList) {
+        setPhoneList(phoneList);
+        return this;
+    }
+
+    public User issueList(List<Issue> issueList) {
+        setIssueList(issueList);
+        return this;
+    }
+
+    public User createdAt(Calendar createdAt) {
+        setCreatedAt(createdAt);
+        return this;
+    }
+
+    public User updatedAt(Calendar updatedAt) {
+        setUpdatedAt(updatedAt);
+        return this;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
+    public boolean equals(Object o) {
+        if (o == this)
             return true;
-        if (obj == null)
+        if (!(o instanceof User)) {
             return false;
-        if (getClass() != obj.getClass())
-            return false;
-        User other = (User) obj;
-        if (createdAt == null) {
-            if (other.createdAt != null)
-                return false;
-        } else if (!createdAt.equals(other.createdAt))
-            return false;
-        if (email == null) {
-            if (other.email != null)
-                return false;
-        } else if (!email.equals(other.email))
-            return false;
-        if (id != other.id)
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        if (password == null) {
-            if (other.password != null)
-                return false;
-        } else if (!password.equals(other.password))
-            return false;
-        if (phoneList == null) {
-            if (other.phoneList != null)
-                return false;
-        } else if (!phoneList.equals(other.phoneList))
-            return false;
-        if (updatedAt == null) {
-            if (other.updatedAt != null)
-                return false;
-        } else if (!updatedAt.equals(other.updatedAt))
-            return false;
-        return true;
+        }
+        User user = (User) o;
+        return id == user.id && Objects.equals(name, user.name)
+                && Objects.equals(email, user.email)
+                && Objects.equals(password, user.password)
+                && Objects.equals(addressList, user.addressList)
+                && Objects.equals(phoneList, user.phoneList)
+                && Objects.equals(issueList, user.issueList)
+                && Objects.equals(createdAt, user.createdAt)
+                && Objects.equals(updatedAt, user.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, password, addressList, phoneList,
+                issueList, createdAt, updatedAt);
     }
 
     @Override
     public String toString() {
-        return "User [createdAt=" + createdAt + ", email=" + email + ", id="
-                + id + ", name=" + name + ", password=" + password
-                + ", phoneList=" + phoneList + ", updatedAt=" + updatedAt + "]";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        return "User [createdAt=" + sdf.format(createdAt.getTime()) + ", email="
+                + email + ", id=" + id + ", name=" + name + ", password="
+                + password + ", phoneList=" + phoneList + ", updatedAt="
+                + sdf.format(updatedAt.getTime()) + "]";
     }
 
 }

@@ -61,19 +61,16 @@ public class Issue implements Serializable {
     private String longitude;
 
     @NotNull(message = "Issue type may not be null")
-    @ManyToOne
-    @JoinColumn(name = "cd_tipo_ocorrencia")
-    private IssueType issueType;
+    @Column(name = "cd_tipo_ocorrencia")
+    private int issueTypeId;
 
     @NotNull(message = "Issue status may not be null")
-    @ManyToOne
-    @JoinColumn(name = "cd_status_ocorrencia")
-    private IssueStatus issueStatus;
+    @Column(name = "cd_status_ocorrencia")
+    private int issueStatusId;
 
-    @NotNull(message = "User status may not be null")
-    @ManyToOne
-    @JoinColumn(name = "cd_usuario")
-    private User user;
+    @NotNull(message = "User Id may not be null!")
+    @Column(name = "cd_usuario", nullable = false)
+    private int userId;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
@@ -90,21 +87,21 @@ public class Issue implements Serializable {
     public Issue() {}
 
     public Issue(int id, String description, String latitude, String longitude,
-            IssueType issueType, IssueStatus issueStatus, User user,
-            Calendar createdAt, Calendar updatedAt) {
+            int issueTypeId, int issueStatusId, int userId, Calendar createdAt,
+            Calendar updatedAt) {
         this.id = id;
         this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.issueType = issueType;
-        this.issueStatus = issueStatus;
-        this.user = user;
+        this.issueTypeId = issueTypeId;
+        this.issueStatusId = issueStatusId;
+        this.userId = userId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -112,7 +109,7 @@ public class Issue implements Serializable {
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
     public void setDescription(String description) {
@@ -120,7 +117,7 @@ public class Issue implements Serializable {
     }
 
     public String getLatitude() {
-        return latitude;
+        return this.latitude;
     }
 
     public void setLatitude(String latitude) {
@@ -128,39 +125,39 @@ public class Issue implements Serializable {
     }
 
     public String getLongitude() {
-        return longitude;
+        return this.longitude;
     }
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
-    public IssueType getIssueType() {
-        return issueType;
+    public int getIssueTypeId() {
+        return this.issueTypeId;
     }
 
-    public void setIssueType(IssueType issueType) {
-        this.issueType = issueType;
+    public void setIssueTypeId(int issueTypeId) {
+        this.issueTypeId = issueTypeId;
     }
 
-    public IssueStatus getIssueStatus() {
-        return issueStatus;
+    public int getIssueStatusId() {
+        return this.issueStatusId;
     }
 
-    public void setIssueStatus(IssueStatus issueStatus) {
-        this.issueStatus = issueStatus;
+    public void setIssueStatusId(int issueStatusId) {
+        this.issueStatusId = issueStatusId;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return this.userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public Calendar getCreatedAt() {
-        return createdAt;
+        return this.createdAt;
     }
 
     public void setCreatedAt(Calendar createdAt) {
@@ -168,7 +165,7 @@ public class Issue implements Serializable {
     }
 
     public Calendar getUpdatedAt() {
-        return updatedAt;
+        return this.updatedAt;
     }
 
     public void setUpdatedAt(Calendar updatedAt) {
@@ -195,18 +192,18 @@ public class Issue implements Serializable {
         return this;
     }
 
-    public Issue issueType(IssueType issueType) {
-        setIssueType(issueType);
+    public Issue issueTypeId(int issueTypeId) {
+        setIssueTypeId(issueTypeId);
         return this;
     }
 
-    public Issue issueStatus(IssueStatus issueStatus) {
-        setIssueStatus(issueStatus);
+    public Issue issueStatusId(int issueStatusId) {
+        setIssueStatusId(issueStatusId);
         return this;
     }
 
-    public Issue user(User user) {
-        setUser(user);
+    public Issue userId(int userId) {
+        setUserId(userId);
         return this;
     }
 
@@ -231,17 +228,17 @@ public class Issue implements Serializable {
         return id == issue.id && Objects.equals(description, issue.description)
                 && Objects.equals(latitude, issue.latitude)
                 && Objects.equals(longitude, issue.longitude)
-                && Objects.equals(issueType, issue.issueType)
-                && Objects.equals(issueStatus, issue.issueStatus)
-                && Objects.equals(user, issue.user)
+                && issueTypeId == issue.issueTypeId
+                && issueStatusId == issue.issueStatusId
+                && userId == issue.userId
                 && Objects.equals(createdAt, issue.createdAt)
                 && Objects.equals(updatedAt, issue.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, description, latitude, longitude, issueType,
-                issueStatus, user, createdAt, updatedAt);
+        return Objects.hash(id, description, latitude, longitude, issueTypeId,
+                issueStatusId, userId, createdAt, updatedAt);
     }
 
     @Override
@@ -250,11 +247,11 @@ public class Issue implements Serializable {
 
         return "{" + " id='" + getId() + "'" + ", description='"
                 + getDescription() + "'" + ", latitude='" + getLatitude() + "'"
-                + ", longitude='" + getLongitude() + "'" + ", issueType='"
-                + getIssueType() + "'" + ", issueStatus='" + getIssueStatus()
-                + "'" + ", user='" + getUser() + "'" + ", createdAt='"
-                + sdf.format(createdAt.getTime()) + "'" + ", updatedAt='"
-                + sdf.format(updatedAt.getTime()) + "'" + "}";
+                + ", longitude='" + getLongitude() + "'" + ", issueTypeId='"
+                + getIssueTypeId() + "'" + ", issueStatusId='"
+                + getIssueStatusId() + "'" + ", userId='" + getUserId() + "'"
+                + ", createdAt='" + sdf.format(createdAt.getTime()) + "'"
+                + ", updatedAt='" + sdf.format(updatedAt.getTime()) + "'" + "}";
     }
 
 }
